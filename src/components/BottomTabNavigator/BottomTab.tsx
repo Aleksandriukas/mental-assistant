@@ -13,7 +13,7 @@ export const BottomBar = ({children}: PropsWithChildren<{}>) => {
   const {bottom} = useSafeAreaInsets();
   return (
     <Surface
-      elevation={1}
+      elevation={2}
       style={{
         paddingBottom: bottom === 0 ? 16 : bottom,
         paddingTop: 16,

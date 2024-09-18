@@ -34,7 +34,7 @@ export const ChatRoom = ({label, onPress}: ChatRoomProps) => {
           height: roomSize,
           width: roomSize,
         }}
-        elevation={3}>
+        elevation={2}>
         <Text variant="bodyLarge">{label}</Text>
       </Surface>
     </Pressable>
