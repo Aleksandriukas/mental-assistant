@@ -1,4 +1,4 @@
-package com.mentalassistant
+package com.mentalassistant2
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

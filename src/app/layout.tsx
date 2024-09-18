@@ -1,5 +1,5 @@
-import {PropsWithChildren, useEffect, useId} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {PropsWithChildren} from 'react';
+import {StyleSheet, View} from 'react-native';
 import {PaperProvider, useTheme} from 'react-native-paper';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 
@@ -11,7 +11,10 @@ export default function MainLayout({children}: PropsWithChildren<{}>) {
     <PaperProvider theme={MD3DarkTheme}>
       <SafeAreaProvider>
         <View
-          style={[StyleSheet.absoluteFill, {backgroundColor: colors.surface}]}>
+          style={[
+            StyleSheet.absoluteFill,
+            {backgroundColor: colors.background},
+          ]}>
           {children}
         </View>
       </SafeAreaProvider>
