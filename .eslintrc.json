@@ -1,0 +1,4 @@
+{
+  "root": true,
+  "plugins": ["react-native", "@react-native-community"]
+}
