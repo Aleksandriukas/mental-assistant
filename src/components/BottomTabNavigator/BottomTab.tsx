@@ -1,4 +1,4 @@
-import {PropsWithChildren} from 'react';
+import {PropsWithChildren, useState} from 'react';
 import {Pressable, View} from 'react-native';
 import {Icon, Surface, Text, useTheme} from 'react-native-paper';
 import Animated, {
@@ -7,6 +7,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {StateLayer} from '../StateLayer';
 
 export const BottomBar = ({children}: PropsWithChildren<{}>) => {
   const {bottom} = useSafeAreaInsets();
@@ -33,22 +34,15 @@ export type TabProps = {
 };
 
 export const Tab = ({icon, isFocused, label, onPress}: TabProps) => {
-  const isPressedIn = useSharedValue(false);
+  const [pressed, setPressed] = useState(false);
 
   const onPressIn = () => {
-    console.log('onPressIn');
-    isPressedIn.value = true;
+    setPressed(true);
   };
 
   const onPressOut = () => {
-    isPressedIn.value = false;
+    setPressed(false);
   };
-
-  const animatedPressStyle = useAnimatedStyle(() => {
-    return {
-      opacity: withTiming(isPressedIn.value ? 0.1 : 0),
-    };
-  });
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -85,18 +79,7 @@ export const Tab = ({icon, isFocused, label, onPress}: TabProps) => {
             },
           ]}
         />
-        <Animated.View
-          style={[
-            animatedPressStyle,
-            {
-              position: 'absolute',
-              backgroundColor: '#000',
-              borderRadius: 24,
-              width: '100%',
-              height: '100%',
-            },
-          ]}
-        />
+        <StateLayer pressed={pressed} style={{borderRadius: 24}} />
         <View style={{paddingHorizontal: 20, paddingVertical: 8}}>
           <Icon
             source={icon}

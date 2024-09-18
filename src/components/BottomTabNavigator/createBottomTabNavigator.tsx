@@ -19,6 +19,7 @@ import {
   useNavigationBuilder,
 } from '@react-navigation/native';
 import {useTheme} from 'react-native-paper';
+import Animated, {useAnimatedStyle, withTiming} from 'react-native-reanimated';
 
 export const ScreenWrapper = ({style, ...props}: ViewProps) => {
   return <View style={[{flex: 1}, style]} {...props} />;
@@ -31,9 +32,19 @@ export const Screen = ({
 }: {isFocused: boolean} & ViewProps) => {
   const {colors} = useTheme();
 
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      opacity: withTiming(isFocused ? 1 : 0.85, {duration: 100}),
+      //If you will notice some bugs with opacity, you can use this code below
+      // opacity: isFocused ? 1 : 0,
+      zIndex: isFocused ? 1 : -1,
+    };
+  });
+
   return (
-    <View
+    <Animated.View
       style={[
+        animatedStyle,
         {
           position: 'absolute',
           left: 0,
@@ -42,9 +53,6 @@ export const Screen = ({
           bottom: 0,
           backgroundColor: colors.background,
         },
-
-        isFocused ? {zIndex: 0, opacity: 1} : {zIndex: -1, opacity: 0},
-
         style,
       ]}
       {...props}

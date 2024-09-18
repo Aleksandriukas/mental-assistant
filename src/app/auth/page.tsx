@@ -10,7 +10,7 @@ export default function AuthPage() {
       <Text>MentalAssistant</Text>
       <Button
         onPress={() => {
-          linkTo('/main/chat');
+          linkTo('/main/assistant');
         }}
         icon="alien-outline">
         Check health

@@ -8,23 +8,24 @@ export default function TabsLayout({children}: PropsWithChildren<{}>) {
   const linkTo = useLinkTo();
   const activeRoute = useActiveRoute();
 
-  const currentTab = activeRoute!.split('/');
+  const currentTab = activeRoute ? activeRoute.split('/') : [];
 
+  console.log('currentTab', currentTab);
   return (
     <View style={{height: '100%', width: '100%'}}>
       {children}
       <BottomBar>
         <Tab
+          onPress={() => linkTo('/main/assistant')}
+          isFocused={Boolean(currentTab.find(value => value === 'assistant'))}
+          icon="alien-outline"
+          label="Assistant"
+        />
+        <Tab
           onPress={() => linkTo('/main/daily')}
           isFocused={Boolean(currentTab.find(value => value === 'daily'))}
           icon="alien-outline"
           label="daily"
-        />
-        <Tab
-          onPress={() => linkTo('/main/chat')}
-          isFocused={Boolean(currentTab.find(value => value === 'chat'))}
-          icon="alien-outline"
-          label="chat"
         />
       </BottomBar>
     </View>
