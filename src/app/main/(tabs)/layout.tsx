@@ -16,16 +16,28 @@ export default function TabsLayout({children}: PropsWithChildren<{}>) {
       {children}
       <BottomBar>
         <Tab
+          onPress={() => linkTo('/main/daily')}
+          isFocused={Boolean(currentTab.find(value => value === 'daily'))}
+          icon="account"
+          label="Home"
+        />
+        <Tab
           onPress={() => linkTo('/main/assistant')}
           isFocused={Boolean(currentTab.find(value => value === 'assistant'))}
-          icon="alien-outline"
+          icon="assistant"
           label="Assistant"
         />
         <Tab
-          onPress={() => linkTo('/main/daily')}
-          isFocused={Boolean(currentTab.find(value => value === 'daily'))}
-          icon="alien-outline"
-          label="daily"
+          onPress={() => linkTo('/main/meditation')}
+          isFocused={Boolean(currentTab.find(value => value === 'meditation'))}
+          icon="meditation"
+          label="Meditation"
+        />
+        <Tab
+          onPress={() => linkTo('/main/settings')}
+          isFocused={Boolean(currentTab.find(value => value === 'settings'))}
+          icon="hammer-wrench"
+          label="Settings"
         />
       </BottomBar>
     </View>

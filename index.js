@@ -15,7 +15,7 @@ export default function App() {
       context={context}
       linking={{
         prefixes: ['MentalAssistant://'],
-        getInitialURL: () => 'MentalAssistant://main/assistant',
+        getInitialURL: () => 'MentalAssistant://auth',
       }}
     />
   );

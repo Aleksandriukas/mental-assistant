@@ -18,7 +18,7 @@ export const BottomBar = ({children}: PropsWithChildren<{}>) => {
         paddingBottom: bottom === 0 ? 16 : bottom,
         paddingTop: 16,
         paddingHorizontal: 32,
-        justifyContent: 'space-around',
+        justifyContent: 'space-between',
         flexDirection: 'row',
       }}>
       {children}
