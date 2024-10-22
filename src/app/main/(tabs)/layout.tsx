@@ -8,7 +8,7 @@ export default function TabsLayout({children}: PropsWithChildren<{}>) {
   const linkTo = useLinkTo();
   const activeRoute = useActiveRoute();
 
-  const currentTab = activeRoute ? activeRoute.split('/') : [];
+  const currentTab = activeRoute ? activeRoute.split('/') : ['daily'];
 
   console.log('currentTab', currentTab);
   return (

@@ -1166,9 +1166,15 @@ PODS:
     - React-logger (= 0.74.5)
     - React-perflogger (= 0.74.5)
     - React-utils (= 0.74.5)
+<<<<<<< HEAD
   - ReactNativeOpenAI (0.6.1):
     - React-Core
   - RNReanimated (3.9.0):
+=======
+  - RNCAsyncStorage (2.0.0):
+    - React-Core
+  - RNReanimated (3.10.1):
+>>>>>>> main
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1292,7 +1298,11 @@ DEPENDENCIES:
   - React-runtimescheduler (from `../node_modules/react-native/ReactCommon/react/renderer/runtimescheduler`)
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+<<<<<<< HEAD
   - ReactNativeOpenAI (from `../node_modules/react-native-openai`)
+=======
+  - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
+>>>>>>> main
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
@@ -1412,8 +1422,13 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/react/utils"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+<<<<<<< HEAD
   ReactNativeOpenAI:
     :path: "../node_modules/react-native-openai"
+=======
+  RNCAsyncStorage:
+    :path: "../node_modules/@react-native-async-storage/async-storage"
+>>>>>>> main
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -1478,8 +1493,13 @@ SPEC CHECKSUMS:
   React-runtimescheduler: cfbe85c3510c541ec6dc815c7729b41304b67961
   React-utils: f242eb7e7889419d979ca0e1c02ccc0ea6e43b29
   ReactCommon: f7da14a8827b72704169a48c929bcde802698361
+<<<<<<< HEAD
   ReactNativeOpenAI: d849415ed6a087108b69f97dec8e08fb3f524e93
   RNReanimated: 5fe9e4e22610ec906856da8dde7ea6815dd0cee2
+=======
+  RNCAsyncStorage: d35c79ffba52c1013013e16b1fc295aec2feabb6
+  RNReanimated: 35f9ac9c3ac42d0497ebd1cce5c39d7687a8493e
+>>>>>>> main
   RNScreens: aa943ad421c3ced3ef5a47ede02b0cbfc43a012e
   RNVectorIcons: 845eda5c7819bd29699cafd0fc98c9d4afe28c96
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
