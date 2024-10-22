@@ -7,9 +7,10 @@ import {View} from 'react-native';
 import {useEffect, useState} from 'react';
 import {Chat, Message} from '../../../../components/Chat/Chat';
 import OpenAI from 'react-native-openai';
+import {OPENAI_KEY} from '@env';
 
 const openAI = new OpenAI({
-  apiKey: process.env.OPENAI_KEY || '',
+  apiKey: OPENAI_KEY || '',
   organization: 'MentalAssistant',
 });
 
@@ -21,6 +22,7 @@ export default function ChatPage() {
   const {id} = useParams();
 
   useEffect(() => {
+    //FIXME: This library does not work properly
     openAI.chat.addListener('onChatMessageReceived', payload => {
       console.log('payload', payload);
       setMessages(message => {
@@ -52,17 +54,10 @@ export default function ChatPage() {
         <Chat
           messages={messages}
           onSend={async message => {
-            setMessages(old => [{content: message, isChat: false}, ...old]);
-            try {
-              const res = await openAI.chat.create({
-                model: 'gpt-4',
-                messages: [{role: 'user', content: message}],
-              });
-
-              console.log(JSON.stringify(res));
-            } catch (e) {
-              console.log(e);
-            }
+            openAI.chat.stream({
+              messages: [{role: 'system', content: message}],
+              model: 'gpt-3.5-turbo',
+            });
           }}
         />
       </Stack>
