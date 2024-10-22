@@ -6,7 +6,7 @@ import {TouchableOpacity, View, KeyboardAvoidingView} from 'react-native';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 
 type FormValues = {
-  username: String;
+  email: String;
   password: String;
 };
 
@@ -14,7 +14,7 @@ export default function AuthPage() {
   const linkTo = useLinkTo();
 
   const {control, handleSubmit} = useForm<FormValues>({
-    defaultValues: {username: '', password: ''},
+    defaultValues: {email: '', password: ''},
   });
 
   const onSubmit = (data: FormValues) => {
@@ -33,12 +33,7 @@ export default function AuthPage() {
         justifyContent: 'center',
         paddingHorizontal: 24,
       }}>
-      <StringInput
-        label="Username"
-        required
-        name="username"
-        control={control}
-      />
+      <StringInput label="Email" required name="email" control={control} />
       <StringInput
         label="Password"
         required
