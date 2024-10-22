@@ -21,7 +21,7 @@ export default function App() {
 
           if (metaData) {
             console.log('yes');
-            return 'MentalAssistant://main/daily';
+            return 'MentalAssistant://main/home';
           }
           return 'MentalAssistant://auth';
         },

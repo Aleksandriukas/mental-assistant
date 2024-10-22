@@ -16,8 +16,8 @@ export default function TabsLayout({children}: PropsWithChildren<{}>) {
       {children}
       <BottomBar>
         <Tab
-          onPress={() => linkTo('/main/daily')}
-          isFocused={Boolean(currentTab.find(value => value === 'daily'))}
+          onPress={() => linkTo('/main/home')}
+          isFocused={Boolean(currentTab.find(value => value === 'home'))}
           icon="account"
           label="Home"
         />
