@@ -4,7 +4,7 @@ import {Resolver, useForm} from 'react-hook-form';
 import {KeyboardAvoidingView, TouchableOpacity, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
-import {useLinkTo} from '../../../../charon';
+import {supabase} from '../../../lib/supabase';
 
 type FormValues = {
   name: String;
@@ -15,7 +15,14 @@ type FormValues = {
 };
 
 export default function AuthPage() {
-  const {control, handleSubmit} = useForm<FormValues>({
+  const {goBack} = useNavigation();
+
+  const {
+    control,
+    handleSubmit,
+    setError,
+    formState: {errors},
+  } = useForm<FormValues>({
     defaultValues: {
       name: '',
       surname: '',
@@ -25,11 +32,34 @@ export default function AuthPage() {
     },
   });
 
-  const onSubmit = (data: FormValues) => {
-    //
+  const onSubmit = async (data: FormValues) => {
+    if (data.password !== data.rPassword) {
+      setError('root.serverError', {
+        type: 'registerFail',
+        message: 'Passwords do not match!',
+      });
+      return;
+    }
+    const {error} = await supabase.auth.signUp({
+      email: data.email.toString(),
+      password: data.password.toString(),
+      options: {
+        data: {
+          name: data.name.toString(),
+          surname: data.surname.toString(),
+        },
+      },
+    });
+    if (error) {
+      setError('root.serverError', {
+        type: 'registerFail',
+        message: error.message,
+      });
+    } else {
+      goBack();
+    }
   };
 
-  const {goBack} = useNavigation();
   return (
     <Stack style={{width: '100%', height: '100%'}}>
       <Appbar.Header elevated>
@@ -62,7 +92,17 @@ export default function AuthPage() {
           name="rPassword"
           control={control}
         />
-
+        {errors.root?.serverError.type === 'registerFail' && (
+          <Text
+            style={{
+              width: '100%',
+              textAlign: 'center',
+              padding: 16,
+              color: 'red',
+            }}>
+            {errors.root?.serverError.message}
+          </Text>
+        )}
         <Button
           style={{width: '100%'}}
           mode="contained"
