@@ -1,6 +1,7 @@
 import {AppRegistry} from 'react-native';
 import {name as appName} from './app.json';
 import {Router} from './charon';
+import {fetchUserData} from './src/utils/fetchUserData';
 
 const context = require.context(
   './src/app',
@@ -15,7 +16,15 @@ export default function App() {
       context={context}
       linking={{
         prefixes: ['MentalAssistant://'],
-        getInitialURL: () => 'MentalAssistant://auth',
+        getInitialURL: async () => {
+          const metaData = await fetchUserData();
+
+          if (metaData) {
+            console.log('yes');
+            return 'MentalAssistant://main/daily';
+          }
+          return 'MentalAssistant://auth';
+        },
       }}
     />
   );
