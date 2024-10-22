@@ -1,8 +1,7 @@
 import {Text} from 'react-native-paper';
 import {Stack} from '../../../../components';
 
-export default function ChatPage() {
-  console.log('chat page');
+export default function DailyPage() {
   return (
     <Stack
       style={{
@@ -10,7 +9,7 @@ export default function ChatPage() {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-      <Text>ChatPage</Text>
+      <Text>Settings Page</Text>
     </Stack>
   );
 }

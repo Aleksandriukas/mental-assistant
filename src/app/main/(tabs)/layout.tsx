@@ -10,6 +10,7 @@ export default function TabsLayout({children}: PropsWithChildren<{}>) {
 
   const currentTab = activeRoute ? activeRoute.split('/') : ['daily'];
 
+  console.log('currentTab', currentTab);
   return (
     <View style={{height: '100%', width: '100%'}}>
       {children}
@@ -17,14 +18,26 @@ export default function TabsLayout({children}: PropsWithChildren<{}>) {
         <Tab
           onPress={() => linkTo('/main/daily')}
           isFocused={Boolean(currentTab.find(value => value === 'daily'))}
-          icon="alien-outline"
-          label="daily"
+          icon="account"
+          label="Home"
         />
         <Tab
-          onPress={() => linkTo('/main/chat')}
-          isFocused={Boolean(currentTab.find(value => value === 'chat'))}
-          icon="alien-outline"
-          label="chat"
+          onPress={() => linkTo('/main/assistant')}
+          isFocused={Boolean(currentTab.find(value => value === 'assistant'))}
+          icon="assistant"
+          label="Assistant"
+        />
+        <Tab
+          onPress={() => linkTo('/main/meditation')}
+          isFocused={Boolean(currentTab.find(value => value === 'meditation'))}
+          icon="meditation"
+          label="Meditation"
+        />
+        <Tab
+          onPress={() => linkTo('/main/settings')}
+          isFocused={Boolean(currentTab.find(value => value === 'settings'))}
+          icon="hammer-wrench"
+          label="Settings"
         />
       </BottomBar>
     </View>
