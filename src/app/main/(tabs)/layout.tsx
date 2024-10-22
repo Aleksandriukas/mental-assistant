@@ -8,7 +8,7 @@ export default function TabsLayout({children}: PropsWithChildren<{}>) {
   const linkTo = useLinkTo();
   const activeRoute = useActiveRoute();
 
-  const currentTab = activeRoute!.split('/');
+  const currentTab = activeRoute ? activeRoute.split('/') : ['daily'];
 
   return (
     <View style={{height: '100%', width: '100%'}}>

@@ -1,5 +1,5 @@
 import {PropsWithChildren} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, StatusBar} from 'react-native';
 import {PaperProvider, useTheme} from 'react-native-paper';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 
@@ -10,6 +10,11 @@ export default function MainLayout({children}: PropsWithChildren<{}>) {
   return (
     <PaperProvider theme={MD3DarkTheme}>
       <SafeAreaProvider>
+        <StatusBar
+          translucent={true}
+          backgroundColor="#00000000"
+          barStyle="light-content"
+        />
         <View
           style={[
             StyleSheet.absoluteFill,
