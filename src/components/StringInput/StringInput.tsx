@@ -1,5 +1,5 @@
 import {HelperText, TextInput, TextInputProps} from 'react-native-paper';
-import {Controller} from 'react-hook-form';
+import {Controller, FieldValues, RegisterOptions} from 'react-hook-form';
 import Animated, {FadeIn} from 'react-native-reanimated';
 
 export type StringInputProps = {
@@ -7,6 +7,12 @@ export type StringInputProps = {
   control: any;
   name: string;
   required?: boolean;
+  rules?:
+    | Omit<
+        RegisterOptions<FieldValues, string>,
+        'disabled' | 'valueAsNumber' | 'valueAsDate' | 'setValueAs'
+      >
+    | undefined;
 } & Omit<TextInputProps, 'value' | 'onChangeText'>;
 
 const requiredMessage = 'This field is required';
@@ -33,6 +39,7 @@ export const StringInput = ({
   helperText,
   name,
   required = false,
+  rules,
   ...props
 }: StringInputProps) => {
   return (
@@ -40,9 +47,8 @@ export const StringInput = ({
       control={control}
       name={name}
       defaultValue={defaultValue}
-      rules={{required: required}}
+      rules={{required: required ? 'This field is required' : false, ...rules}}
       render={({field, fieldState}) => {
-        console.log(field, fieldState);
         return (
           <>
             <TextInput
@@ -58,12 +64,7 @@ export const StringInput = ({
             <HelperText
               style={{alignSelf: 'flex-start'}}
               type={fieldState.invalid ? 'error' : 'info'}>
-              {getHelperMessage(
-                fieldState.error?.message ?? '',
-                fieldState.invalid,
-                helperText ?? '',
-                required,
-              )}
+              {fieldState.invalid ? fieldState.error?.message : helperText}
             </HelperText>
           </>
         );

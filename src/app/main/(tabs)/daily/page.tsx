@@ -3,10 +3,20 @@ import {Stack} from '../../../../components';
 import {useEffect, useState} from 'react';
 import {supabase} from '../../../../lib/supabase';
 import {UserMetadata} from '@supabase/supabase-js';
-import useUserData from '../../../../hooks/useUserData';
 
 export default function DailyPage() {
-  const userData = useUserData();
+  const [userData, setUserData] = useState<UserMetadata | null>(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const {
+        data: {user},
+      } = await supabase.auth.getUser();
+      let metadata = user?.user_metadata;
+      setUserData(metadata!);
+    };
+    fetchUserData();
+  }, []);
 
   return (
     <Stack

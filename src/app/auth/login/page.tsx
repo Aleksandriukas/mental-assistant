@@ -1,5 +1,5 @@
 import {Button, Text, useTheme} from 'react-native-paper';
-import {Stack, StringInput} from '../../../components';
+import {PasswordInput, Stack, StringInput} from '../../../components';
 import {useLinkTo} from '../../../../charon';
 import {useForm} from 'react-hook-form';
 import {TouchableOpacity, View, KeyboardAvoidingView} from 'react-native';
@@ -29,7 +29,11 @@ export default function AuthPage() {
       password: data.password.toString(),
     });
     if (error) {
-      setError('root.serverError', {
+      setError('email', {
+        type: 'loginFail',
+        message: error.message,
+      });
+      setError('password', {
         type: 'loginFail',
         message: error.message,
       });
@@ -48,24 +52,19 @@ export default function AuthPage() {
         justifyContent: 'center',
         paddingHorizontal: 24,
       }}>
-      <StringInput label="Email" required name="email" control={control} />
       <StringInput
-        label="Password"
+        rules={{
+          pattern: {
+            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+            message: 'Invalid email address',
+          },
+        }}
+        label="Email"
         required
-        name="password"
+        name="email"
         control={control}
       />
-      {errors.root?.serverError.type === 'loginFail' && (
-        <Text
-          style={{
-            width: '100%',
-            textAlign: 'center',
-            padding: 16,
-            color: 'red',
-          }}>
-          {errors.root?.serverError.message}
-        </Text>
-      )}
+      <PasswordInput name="password" control={control} />
       <Button
         style={{width: '100%'}}
         mode="contained"

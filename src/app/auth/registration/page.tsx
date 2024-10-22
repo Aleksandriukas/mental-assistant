@@ -1,10 +1,11 @@
 import {Appbar, Button, Text, useTheme} from 'react-native-paper';
-import {Stack, StringInput} from '../../../components';
-import {Resolver, useForm} from 'react-hook-form';
-import {KeyboardAvoidingView, TouchableOpacity, View} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {PasswordInput, Stack, StringInput} from '../../../components';
+import {useForm} from 'react-hook-form';
+import {useColorScheme, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {supabase} from '../../../lib/supabase';
+import {useContext} from 'react';
+import {AuthContext} from '../AuthContext';
 
 type FormValues = {
   name: String;
@@ -16,6 +17,8 @@ type FormValues = {
 
 export default function AuthPage() {
   const {goBack} = useNavigation();
+
+  const {showSnackbar} = useContext(AuthContext);
 
   const {
     control,
@@ -34,7 +37,11 @@ export default function AuthPage() {
 
   const onSubmit = async (data: FormValues) => {
     if (data.password !== data.rPassword) {
-      setError('root.serverError', {
+      setError('password', {
+        type: 'registerFail',
+        message: 'Passwords do not match!',
+      });
+      setError('rPassword', {
         type: 'registerFail',
         message: 'Passwords do not match!',
       });
@@ -51,11 +58,9 @@ export default function AuthPage() {
       },
     });
     if (error) {
-      setError('root.serverError', {
-        type: 'registerFail',
-        message: error.message,
-      });
+      showSnackbar(error.message, 'error');
     } else {
+      showSnackbar('Registration successful', 'info');
       goBack();
     }
   };
@@ -79,19 +84,20 @@ export default function AuthPage() {
           name="surname"
           control={control}
         />
-        <StringInput label="Email" required name="email" control={control} />
         <StringInput
-          label="Password"
+          rules={{
+            pattern: {
+              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+              message: 'Invalid email address',
+            },
+          }}
+          label="Email"
           required
-          name="password"
+          name="email"
           control={control}
         />
-        <StringInput
-          label="Password"
-          required
-          name="rPassword"
-          control={control}
-        />
+        <PasswordInput name="password" control={control} />
+        <PasswordInput name="rPassword" control={control} />
         {errors.root?.serverError.type === 'registerFail' && (
           <Text
             style={{
