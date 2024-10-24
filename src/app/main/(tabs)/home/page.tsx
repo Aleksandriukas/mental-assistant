@@ -1,6 +1,6 @@
 import {Surface, Text, useTheme} from 'react-native-paper';
-import {Stack, StateLayer} from '../../../../components';
-import {useEffect, useState} from 'react';
+import {StateLayer} from '../../../../components';
+import {useState} from 'react';
 import {supabase} from '../../../../lib/supabase';
 import {UserMetadata} from '@supabase/supabase-js';
 import {useQuery} from '@tanstack/react-query';
@@ -15,14 +15,12 @@ import {
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {
   Canvas,
-  Circle,
-  Group,
   PaintStyle,
   Path,
   Skia,
   StrokeCap,
 } from '@shopify/react-native-skia';
-import {Style} from 'react-native-paper/lib/typescript/components/List/utils';
+import {useLinkTo} from '../../../../../charon';
 
 export default function DailyPage() {
   const query = useQuery({
@@ -36,14 +34,23 @@ export default function DailyPage() {
 
   const {top} = useSafeAreaInsets();
 
+  const linkTo = useLinkTo();
+
   return (
     <ScrollView
       contentContainerStyle={{
         flex: 1,
-        paddingTop: top === 0 ? 24 : top,
+        paddingTop: top + 12,
         marginHorizontal: 24,
       }}>
-      <Test completed={2} total={12} onPress={() => {}} />
+      <Test
+        completed={3}
+        total={12}
+        onPress={() => {
+          console.log('pressed');
+          linkTo('/main/mentalTest');
+        }}
+      />
     </ScrollView>
   );
 }
@@ -68,8 +75,7 @@ const Test = ({completed, onPress, total}: TestProps) => {
       onPressOut={() => {
         setPressed(false);
       }}
-      // onPress={onPress}
-    >
+      onPress={onPress}>
       <StateLayer style={{borderRadius: 24}} pressed={pressed} />
       <Surface
         style={{
@@ -93,9 +99,9 @@ const Test = ({completed, onPress, total}: TestProps) => {
           <CircularProgress
             total={total}
             completed={completed}
-            emptyColor="black"
+            emptyColor={colors.background}
             filledColor={colors.primary}
-            size={120}
+            size={96}
             strokeWidth={14}
           />
         </View>
