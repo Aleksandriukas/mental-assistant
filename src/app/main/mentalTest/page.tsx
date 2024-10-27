@@ -1,65 +1,13 @@
-import {
-  Appbar,
-  Avatar,
-  Card,
-  IconButton,
-  Surface,
-  Text,
-  useTheme,
-} from 'react-native-paper';
-import {useNavigation} from '@react-navigation/native';
+import {Appbar, Avatar, Card, Text} from 'react-native-paper';
+import {useLinkTo, useNavigation} from '@react-navigation/native';
 import {FlatList, View} from 'react-native';
-import {useQuery} from '@tanstack/react-query';
+import {useQuery, useQueryClient} from '@tanstack/react-query';
 import {AnimatedPressable, Stack, StateLayer} from '../../../components';
-
-type TestInfoType = {
-  title: string;
-  shortDescription: string; // max 2 sentences
-  time: number; // in minutes
-  icon?: string;
-  completed: boolean;
-};
-
-const getTestsInfo = (): Promise<TestInfoType[]> => {
-  //TODO Change this mock promise to real data fetching @DungBui
-  return new Promise(resolve => {
-    const testsInfo: TestInfoType[] = [
-      {
-        title: 'Memory Test',
-        shortDescription: 'A test to evaluate your memory skills.',
-        time: 5,
-        icon: 'brain',
-        completed: false,
-      },
-      {
-        title: 'Attention Test',
-        shortDescription: 'A test to measure your attention span.',
-        time: 10,
-        icon: 'eye',
-        completed: true,
-      },
-      {
-        title: 'Cognitive Flexibility Test',
-        shortDescription: 'A test to assess your cognitive flexibility.',
-        time: 15,
-        icon: 'shuffle',
-        completed: false,
-      },
-      {
-        title: 'Problem Solving Test',
-        shortDescription: 'A test to gauge your problem-solving abilities.',
-        time: 5,
-        icon: 'puzzle',
-        completed: false,
-      },
-    ];
-    resolve(testsInfo);
-  });
-};
+import {getTest} from './[testId]/getTest';
+import {getTestsInfo, TestInfoType} from './getTestsInfo';
 
 export default function ChatPage() {
-  const {goBack} = useNavigation();
-
+  const linkTo = useLinkTo();
   const {data} = useQuery({
     queryKey: ['tests'],
     queryFn: async () => {
@@ -69,12 +17,14 @@ export default function ChatPage() {
     },
   });
 
+  const queryClient = useQueryClient();
+
   return (
     <Stack style={{flex: 1}}>
       <Appbar.Header elevated>
         <Appbar.BackAction
           onPress={() => {
-            goBack();
+            linkTo('/main/home');
           }}
         />
         <Appbar.Content title="Select test" />
@@ -85,6 +35,16 @@ export default function ChatPage() {
         renderItem={({item}) => {
           return (
             <TestItem
+              onPress={async () => {
+                await queryClient.prefetchQuery({
+                  //TODO create loading screens
+                  queryKey: ['test', item.id],
+                  queryFn: getTest,
+                });
+
+                linkTo(`/main/mentalTest/${item.id}/0`);
+              }}
+              id={item.id}
               completed={item.completed}
               time={item.time}
               shortDescription={item.shortDescription}
@@ -98,15 +58,24 @@ export default function ChatPage() {
   );
 }
 
+type TestItemProps = {
+  onPress: () => void;
+} & TestInfoType;
+
 const TestItem = ({
   title,
   shortDescription,
   time,
   icon,
   completed,
-}: TestInfoType) => {
+  onPress,
+}: TestItemProps) => {
   return (
-    <AnimatedPressable pointerEvents={completed ? 'none' : undefined}>
+    <AnimatedPressable
+      onPress={() => {
+        onPress();
+      }}
+      pointerEvents={completed ? 'none' : undefined}>
       <Card.Title
         title={title}
         subtitle={shortDescription}
