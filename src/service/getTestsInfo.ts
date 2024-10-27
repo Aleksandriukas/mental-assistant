@@ -13,7 +13,11 @@ export type TestInfoType = {
 
 export const getTestsInfo = (id: number): Promise<TestInfoType[]> => {
   return new Promise(async resolve => {
-    const {data} = await supabase.rpc('get_test_info', {test_set_id: id});
+    const user = await supabase.auth.getUser();
+    const {data} = await supabase.rpc('get_test_info', {
+      test_set_id: id,
+      user_id: user.data.user?.id,
+    });
     resolve(data);
   });
 };

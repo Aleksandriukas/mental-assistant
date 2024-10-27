@@ -1,5 +1,6 @@
-import {Text} from 'react-native-paper';
+import {Button, Text} from 'react-native-paper';
 import {Stack} from '../../../../components';
+import {supabase} from '../../../../lib/supabase';
 
 export default function DailyPage() {
   return (
@@ -10,6 +11,13 @@ export default function DailyPage() {
         alignItems: 'center',
       }}>
       <Text>Settings Page</Text>
+      <Button
+        mode="contained"
+        onPress={async () => {
+          await supabase.auth.signOut();
+        }}>
+        Log out
+      </Button>
     </Stack>
   );
 }
