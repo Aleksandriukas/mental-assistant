@@ -8,6 +8,7 @@ import {getTestsInfo, TestInfoType} from './getTestsInfo';
 
 export default function ChatPage() {
   const linkTo = useLinkTo();
+
   const {data} = useQuery({
     queryKey: ['tests'],
     queryFn: async () => {

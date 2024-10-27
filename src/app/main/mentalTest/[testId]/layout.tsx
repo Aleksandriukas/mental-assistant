@@ -53,7 +53,7 @@ export default function TestLayout({children}: PropsWithChildren<{}>) {
     console.log('Client answers:', clientAnswers);
     setIsLoading(true);
 
-    const data = await queryClient.prefetchQuery({
+    await queryClient.prefetchQuery({
       queryKey: ['test', testId, 'result'],
       queryFn: getTestResult,
     });

@@ -5,6 +5,7 @@ export type TestInfoType = {
   time: number; // in minutes
   icon?: string;
   completed: boolean;
+  questionCount?: number;
 };
 
 export const getTestsInfo = (): Promise<TestInfoType[]> => {

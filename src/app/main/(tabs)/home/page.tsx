@@ -1,9 +1,6 @@
 import {Surface, Text, useTheme} from 'react-native-paper';
 import {StateLayer} from '../../../../components';
 import {useState} from 'react';
-import {supabase} from '../../../../lib/supabase';
-import {UserMetadata} from '@supabase/supabase-js';
-import {useQuery} from '@tanstack/react-query';
 import {
   Pressable,
   ScrollView,
@@ -23,15 +20,6 @@ import {
 import {useLinkTo} from '../../../../../charon';
 
 export default function DailyPage() {
-  const query = useQuery({
-    queryKey: ['home', 'userData'],
-    staleTime: 1000 * 60 * 60,
-    gcTime: 1000 * 60 * 60 * 24,
-    queryFn: () => {
-      return supabase.auth.getUser();
-    },
-  });
-
   const {top} = useSafeAreaInsets();
 
   const linkTo = useLinkTo();
@@ -44,8 +32,8 @@ export default function DailyPage() {
         marginHorizontal: 24,
       }}>
       <Test
-        completed={3}
-        total={12}
+        completed={3} //TODO: @dungbui
+        total={12} //TODO: @dungbui
         onPress={() => {
           console.log('pressed');
           linkTo('/main/mentalTest');
@@ -134,8 +122,8 @@ const CircularProgress = ({
 
   const percentage = (completed / total) * 100;
 
-  const startAngle = -Math.PI / 2; // Начнем сверху (угол -90 градусов)
-  const endAngle = startAngle + (2 * Math.PI * percentage) / 100; // Угол для заполнения круга
+  const startAngle = -Math.PI / 2;
+  const endAngle = startAngle + (2 * Math.PI * percentage) / 100;
 
   const filledPath = Skia.Path.Make();
   filledPath.addArc(
@@ -145,8 +133,8 @@ const CircularProgress = ({
       width: radius * 2,
       height: radius * 2,
     },
-    startAngle * (180 / Math.PI), // Начальный угол в градусах
-    (endAngle - startAngle) * (180 / Math.PI), // Угол заполнения
+    startAngle * (180 / Math.PI),
+    (endAngle - startAngle) * (180 / Math.PI),
   );
 
   const emptyPath = Skia.Path.Make();
