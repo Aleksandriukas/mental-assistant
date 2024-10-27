@@ -1,7 +1,7 @@
 import {useQuery} from '@tanstack/react-query';
-import {useParams} from '../../../../../../charon';
-import {AnimatedPressable, Stack} from '../../../../../components';
-import {getTest} from '../getTest';
+import {useParams} from '../../../../../../../charon';
+import {AnimatedPressable, Stack} from '../../../../../../components';
+import {getTestQuestions} from '../../../../../../service/getTest';
 import {Text, useTheme} from 'react-native-paper';
 import {useEffect} from 'react';
 import {FlatList} from 'react-native';
@@ -16,16 +16,19 @@ import {useTestContext} from '../TestContext';
 export default function Question() {
   const {testId, qId} = useParams();
 
-  const {data} = useQuery({queryKey: ['test', testId], queryFn: getTest});
+  const {data} = useQuery({
+    queryKey: ['test', testId],
+    queryFn: () => getTestQuestions(Number(testId)),
+  });
 
   const {clientAnswers, setClientAnswers} = useTestContext();
 
   const answer = clientAnswers[Number(qId)];
 
-  const setSelectedAnswer = (index: number) => {
+  const setSelectedAnswer = (answer: string) => {
     setClientAnswers(old => {
       const copy = [...old];
-      copy[Number(qId)] = index;
+      copy[Number(qId)] = answer;
       return copy;
     });
   };
@@ -54,10 +57,10 @@ export default function Question() {
         renderItem={({index, item}) => {
           return (
             <AnswerItem
-              checked={answer === index}
+              checked={answer === answers[index]}
               title={item}
               onPress={() => {
-                setSelectedAnswer(index);
+                setSelectedAnswer(item);
               }}
             />
           );

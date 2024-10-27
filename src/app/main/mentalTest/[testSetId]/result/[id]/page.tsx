@@ -1,16 +1,12 @@
-import {QueryClient, useQuery, useQueryClient} from '@tanstack/react-query';
-import {useParams} from '../../../../../../charon';
-import {Stack} from '../../../../../components';
-import {getTest} from '../../[testId]/getTest';
+import {useQuery, useQueryClient} from '@tanstack/react-query';
+import {useParams} from '../../../../../../../charon';
+import {Stack} from '../../../../../../components';
 import {Appbar, Button, Text} from 'react-native-paper';
 import {useLinkTo} from '@react-navigation/native';
-import {getTestResult} from '../getTestResult';
+import {getTestResult} from '../../../../../../service/getTestResult';
 import {View} from 'react-native';
-import {
-  useSafeAreaFrame,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
-import {TestInfoType} from '../../getTestsInfo';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useEffect} from 'react';
 
 type Result = 'Good' | 'Average' | 'Bad';
 export type ResultType = {
@@ -35,31 +31,33 @@ export default function Result() {
 
   const {data} = useQuery({
     queryKey: ['test', id, 'result'],
-    queryFn: getTestResult,
+    queryFn: () => getTestResult(Number(id)),
   });
 
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
   const linkTo = useLinkTo();
 
+  const {testSetId} = useParams();
   const close = () => {
-    queryClient.setQueryData(['tests'], (oldData: TestInfoType[]) => {
-      const oldDataCopy = [...oldData];
+    // queryClient.setQueryData(['tests'], (oldData: TestInfoType[]) => {
+    //   const oldDataCopy = [...oldData];
 
-      oldDataCopy.find(item => item.id === Number(id))!.completed = true;
-      return oldDataCopy;
-    });
+    //   oldDataCopy.find(item => item.id === Number(id))!.completed = true;
+    //   return oldDataCopy;
+    // });
 
-    linkTo('/main/mentalTest');
+    linkTo(`/main/mentalTest/${testSetId}`);
   };
 
   return (
     <Stack style={{flex: 1}}>
       <Appbar.Header elevated>
-        <Appbar.Content title={getTitle(data!.result)} />
+        <Appbar.Content title="Test Result" />
       </Appbar.Header>
       <View style={{padding: 24, flex: 1}}>
-        <Text>{data?.description}</Text>
+        <Text>Your result is: {data && data[0].result}</Text>
+        <Text>{data && data[0].description}</Text>
       </View>
       <View
         style={{

@@ -1,8 +1,8 @@
-import {PropsWithChildren, useRef, useState} from 'react';
+import {PropsWithChildren, useEffect, useRef, useState} from 'react';
 import {TestContext} from './TestContext';
 import {useQuery, useQueryClient} from '@tanstack/react-query';
-import {useParams} from '../../../../../charon';
-import {getTest} from './getTest';
+import {useParams} from '../../../../../../charon';
+import {getTestQuestions} from '../../../../../service/getTest';
 import {Dimensions, View} from 'react-native';
 import {Appbar, Button, useTheme} from 'react-native-paper';
 import Animated, {
@@ -10,10 +10,14 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import {Stack} from '../../../../components';
+import {Stack} from '../../../../../components';
 import {useLinkTo, useNavigation} from '@react-navigation/native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {getTestResult} from '../result/getTestResult';
+import {getTestResult} from '../../../../../service/getTestResult';
+import {
+  setTestResults,
+  TestResultAnswer,
+} from '../../../../../service/setTestResult';
 
 export default function TestLayout({children}: PropsWithChildren<{}>) {
   const windowWidth = Dimensions.get('window').width;
@@ -26,9 +30,12 @@ export default function TestLayout({children}: PropsWithChildren<{}>) {
 
   const linkTo = useLinkTo();
 
-  const {testId} = useParams();
+  const {testSetId, testId} = useParams();
 
-  const {data} = useQuery({queryKey: ['test', testId], queryFn: getTest});
+  const {data} = useQuery({
+    queryKey: ['test', testId],
+    queryFn: () => getTestQuestions(Number(testId)),
+  });
 
   const queryClient = useQueryClient();
 
@@ -38,7 +45,11 @@ export default function TestLayout({children}: PropsWithChildren<{}>) {
 
   const currentIndex = useRef(0);
 
-  const [clientAnswers, setClientAnswers] = useState<number[]>([]);
+  const [clientAnswers, setClientAnswers] = useState<string[]>([]);
+
+  useEffect(() => {
+    setClientAnswers(new Array(data?.length).fill(''));
+  }, []);
 
   const progressStyle = useAnimatedStyle(() => {
     return {
@@ -48,21 +59,25 @@ export default function TestLayout({children}: PropsWithChildren<{}>) {
   });
 
   const complete = async () => {
-    // TODO @DungBui: Implement this function to save the answers to the server
-
-    console.log('Client answers:', clientAnswers);
     setIsLoading(true);
 
-    await queryClient.prefetchQuery({
-      queryKey: ['test', testId, 'result'],
-      queryFn: getTestResult,
-    });
+    let answers: TestResultAnswer[] = [];
+    if (data) {
+      answers = clientAnswers.map((value, index) => {
+        return {questionId: data[index]?.id, answer: value};
+      });
+    }
 
-    setTimeout(() => {}, 1000);
+    const resultId = await setTestResults(answers, Number(testId));
+
+    await queryClient.prefetchQuery({
+      queryKey: ['test', resultId, 'result'],
+      queryFn: () => getTestResult(Number(resultId)),
+    });
 
     setIsLoading(false);
 
-    linkTo(`/main/mentalTest/result/${testId}`);
+    linkTo(`/main/mentalTest/${testSetId}/result/${resultId}`);
   };
   if (!data) return <View></View>;
 
@@ -109,7 +124,9 @@ export default function TestLayout({children}: PropsWithChildren<{}>) {
                   return;
                 }
                 currentIndex.current -= 1;
-                linkTo(`/main/mentalTest/${testId}/${currentIndex.current}`);
+                linkTo(
+                  `/main/mentalTest/${testSetId}/${testId}/${currentIndex.current}`,
+                );
               }}>
               Back
             </Button>
@@ -127,7 +144,9 @@ export default function TestLayout({children}: PropsWithChildren<{}>) {
                 }
 
                 currentIndex.current += 1;
-                linkTo(`/main/mentalTest/${testId}/${currentIndex.current}`);
+                linkTo(
+                  `/main/mentalTest/${testSetId}/${testId}/${currentIndex.current}`,
+                );
               }}>
               {currentIndex.current === data.length ? 'Complete' : 'Next'}
             </Button>

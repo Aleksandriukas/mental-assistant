@@ -1,7 +1,8 @@
 import {Surface, Text, useTheme} from 'react-native-paper';
 import {StateLayer} from '../../../../components';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {
+  Animated,
   Pressable,
   ScrollView,
   StyleProp,
@@ -18,11 +19,34 @@ import {
   StrokeCap,
 } from '@shopify/react-native-skia';
 import {useLinkTo} from '../../../../../charon';
+import {getTestSets, TestSetType} from '../../../../service/getTestSets';
+import {useQuery} from '@tanstack/react-query';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export default function DailyPage() {
   const {top} = useSafeAreaInsets();
 
   const linkTo = useLinkTo();
+
+  const {data, isLoading} = useQuery({
+    queryKey: ['testSets'],
+    queryFn: getTestSets,
+  });
+
+  if (isLoading) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          paddingTop: top + 12,
+          marginHorizontal: 24,
+          gap: 12,
+          alignItems: 'center',
+        }}>
+        <Icon name="hourglass-empty" size={60} color="#6200ee" />
+      </View>
+    );
+  }
 
   return (
     <ScrollView
@@ -30,26 +54,39 @@ export default function DailyPage() {
         flex: 1,
         paddingTop: top + 12,
         marginHorizontal: 24,
+        gap: 12,
       }}>
-      <Test
-        completed={3} //TODO: @dungbui
-        total={12} //TODO: @dungbui
-        onPress={() => {
-          console.log('pressed');
-          linkTo('/main/mentalTest');
-        }}
-      />
+      {data?.map((dataElement: TestSetType) => (
+        <Test
+          key={dataElement.id}
+          title={dataElement.title}
+          shortDescription={dataElement.shortDescription}
+          completed={dataElement.completedTests}
+          total={dataElement.totalTests}
+          onPress={() => {
+            linkTo(`/main/mentalTest/${dataElement.id}`);
+          }}
+        />
+      ))}
     </ScrollView>
   );
 }
 
 type TestProps = {
   onPress: () => void;
+  title: string;
+  shortDescription: string;
   completed: number;
   total: number;
 };
 
-const Test = ({completed, onPress, total}: TestProps) => {
+const Test = ({
+  completed,
+  onPress,
+  total,
+  title,
+  shortDescription,
+}: TestProps) => {
   const [pressed, setPressed] = useState(false);
 
   const {colors} = useTheme();
@@ -77,11 +114,8 @@ const Test = ({completed, onPress, total}: TestProps) => {
         }}
         elevation={2}>
         <View style={{flex: 2, gap: 6}}>
-          <Text variant="titleLarge">Complete tests</Text>
-          <Text variant="bodyMedium">
-            Tests will help us to give you suggestions and track you mental
-            health
-          </Text>
+          <Text variant="titleLarge">{title}</Text>
+          <Text variant="bodyMedium">{shortDescription}</Text>
         </View>
         <View style={{flex: 1}}>
           <CircularProgress

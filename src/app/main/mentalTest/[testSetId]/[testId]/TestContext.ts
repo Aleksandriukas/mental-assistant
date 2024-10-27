@@ -1,8 +1,8 @@
 import {createSafeContext, useSafeContext} from '@sirse-dev/safe-context';
 
 type TestContextType = {
-  clientAnswers: number[];
-  setClientAnswers: React.Dispatch<React.SetStateAction<number[]>>;
+  clientAnswers: string[];
+  setClientAnswers: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 export const TestContext = createSafeContext<TestContextType>();

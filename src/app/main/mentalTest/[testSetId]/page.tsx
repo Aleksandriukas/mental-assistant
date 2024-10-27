@@ -2,20 +2,19 @@ import {Appbar, Avatar, Card, Text} from 'react-native-paper';
 import {useLinkTo, useNavigation} from '@react-navigation/native';
 import {FlatList, View} from 'react-native';
 import {useQuery, useQueryClient} from '@tanstack/react-query';
-import {AnimatedPressable, Stack, StateLayer} from '../../../components';
-import {getTest} from './[testId]/getTest';
-import {getTestsInfo, TestInfoType} from './getTestsInfo';
+import {AnimatedPressable, Stack, StateLayer} from '../../../../components';
+import {getTestsInfo, TestInfoType} from '../../../../service/getTestsInfo';
+import {useParams} from '../../../../../charon';
+import {getTestQuestions} from '../../../../service/getTest';
 
 export default function ChatPage() {
   const linkTo = useLinkTo();
 
-  const {data} = useQuery({
-    queryKey: ['tests'],
-    queryFn: async () => {
-      const result = await getTestsInfo();
+  const {testSetId} = useParams();
 
-      return result.sort((a, b) => Number(a.completed) - Number(b.completed));
-    },
+  const {data} = useQuery({
+    queryKey: ['tests', testSetId],
+    queryFn: () => getTestsInfo(Number(testSetId)),
   });
 
   const queryClient = useQueryClient();
@@ -38,12 +37,10 @@ export default function ChatPage() {
             <TestItem
               onPress={async () => {
                 await queryClient.prefetchQuery({
-                  //TODO create loading screens
                   queryKey: ['test', item.id],
-                  queryFn: getTest,
+                  queryFn: () => getTestQuestions(item.id),
                 });
-
-                linkTo(`/main/mentalTest/${item.id}/0`);
+                linkTo(`/main/mentalTest/${testSetId}/${item.id}/0`);
               }}
               id={item.id}
               completed={item.completed}
