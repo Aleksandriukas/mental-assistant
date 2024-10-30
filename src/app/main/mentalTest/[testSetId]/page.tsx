@@ -16,6 +16,16 @@ export default function ChatPage() {
     queryKey: ['tests', testSetId],
     queryFn: () => getTestsInfo(Number(testSetId)),
   });
+  // sort to completed be at the end
+  const tests = data?.sort((a, b) => {
+    if (a.completed && !b.completed) {
+      return 1;
+    }
+    if (!a.completed && b.completed) {
+      return -1;
+    }
+    return 0;
+  });
 
   const queryClient = useQueryClient();
 

@@ -7,6 +7,7 @@ import {getTestResult} from '../../../../../../service/getTestResult';
 import {View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useEffect} from 'react';
+import {TestInfoType} from '../../../../../../service/getTestsInfo';
 
 type Result = 'Good' | 'Average' | 'Bad';
 export type ResultType = {
@@ -25,7 +26,7 @@ const getTitle = (type: Result) => {
 };
 
 export default function Result() {
-  const {id} = useParams();
+  const {id, testSetId} = useParams();
 
   const {bottom} = useSafeAreaInsets();
 
@@ -34,18 +35,22 @@ export default function Result() {
     queryFn: () => getTestResult(Number(id)),
   });
 
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
   const linkTo = useLinkTo();
 
-  const {testSetId} = useParams();
   const close = () => {
-    // queryClient.setQueryData(['tests'], (oldData: TestInfoType[]) => {
-    //   const oldDataCopy = [...oldData];
+    // queryClient.setQueryData(
+    //   ['tests', testSetId],
+    //   (oldData: TestInfoType[]) => {
+    //     const oldDataCopy = [...oldData];
 
-    //   oldDataCopy.find(item => item.id === Number(id))!.completed = true;
-    //   return oldDataCopy;
-    // });
+    //     oldDataCopy.find(item => item.id === Number(id))!.completed = true;
+    //     return oldDataCopy;
+    //   },
+    // );
+
+    queryClient.invalidateQueries({queryKey: ['tests', testSetId]});
 
     linkTo(`/main/mentalTest/${testSetId}`);
   };
