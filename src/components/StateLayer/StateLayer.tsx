@@ -18,8 +18,6 @@ export const StateLayer = ({
     return {opacity: withTiming(pressed ? pressedOpacity : 0)};
   });
 
-  console.log(pressed);
-
   return (
     <Animated.View
       style={[

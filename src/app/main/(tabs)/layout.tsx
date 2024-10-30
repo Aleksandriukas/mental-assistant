@@ -10,14 +10,13 @@ export default function TabsLayout({children}: PropsWithChildren<{}>) {
 
   const currentTab = activeRoute ? activeRoute.split('/') : ['daily'];
 
-  console.log('currentTab', currentTab);
   return (
     <View style={{height: '100%', width: '100%'}}>
       {children}
       <BottomBar>
         <Tab
-          onPress={() => linkTo('/main/daily')}
-          isFocused={Boolean(currentTab.find(value => value === 'daily'))}
+          onPress={() => linkTo('/main/home')}
+          isFocused={Boolean(currentTab.find(value => value === 'home'))}
           icon="account"
           label="Home"
         />

@@ -38,7 +38,7 @@ export default function AuthPage() {
         message: error.message,
       });
     } else {
-      linkTo('/main/daily');
+      linkTo('/main/home');
     }
   };
 

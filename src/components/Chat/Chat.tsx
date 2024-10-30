@@ -75,8 +75,6 @@ type ChatItemProps = {
 const ChatItem = ({content, isChat}: ChatItemProps) => {
   const {colors} = useTheme();
 
-  console.log(content);
-  console.log(isChat);
   return (
     <View
       style={{
