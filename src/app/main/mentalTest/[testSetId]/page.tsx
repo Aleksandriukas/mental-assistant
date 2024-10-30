@@ -5,7 +5,7 @@ import {useQuery, useQueryClient} from '@tanstack/react-query';
 import {AnimatedPressable, Stack, StateLayer} from '../../../../components';
 import {getTestsInfo, TestInfoType} from '../../../../service/getTestsInfo';
 import {useParams} from '../../../../../charon';
-import {getTestQuestions} from '../../../../service/getTest';
+import {getTestQuestions} from '../../../../service/getTestQuestions';
 
 export default function ChatPage() {
   const linkTo = useLinkTo();

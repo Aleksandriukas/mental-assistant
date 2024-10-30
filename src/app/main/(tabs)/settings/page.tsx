@@ -1,8 +1,11 @@
 import {Button, Text} from 'react-native-paper';
 import {Stack} from '../../../../components';
 import {supabase} from '../../../../lib/supabase';
+import {useLinkTo} from '../../../../../charon';
 
 export default function DailyPage() {
+  const linkTo = useLinkTo();
+
   return (
     <Stack
       style={{
@@ -15,6 +18,7 @@ export default function DailyPage() {
         mode="contained"
         onPress={async () => {
           await supabase.auth.signOut();
+          linkTo('/auth/login');
         }}>
         Log out
       </Button>

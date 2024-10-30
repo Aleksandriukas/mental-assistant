@@ -2,7 +2,7 @@ import {PropsWithChildren, useEffect, useRef, useState} from 'react';
 import {TestContext} from './TestContext';
 import {useQuery, useQueryClient} from '@tanstack/react-query';
 import {useParams} from '../../../../../../charon';
-import {getTestQuestions} from '../../../../../service/getTest';
+import {getTestQuestions} from '../../../../../service/getTestQuestions';
 import {Dimensions, View} from 'react-native';
 import {Appbar, Button, useTheme} from 'react-native-paper';
 import Animated, {

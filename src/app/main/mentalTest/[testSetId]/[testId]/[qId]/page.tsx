@@ -1,7 +1,7 @@
 import {useQuery} from '@tanstack/react-query';
 import {useParams} from '../../../../../../../charon';
 import {AnimatedPressable, Stack} from '../../../../../../components';
-import {getTestQuestions} from '../../../../../../service/getTest';
+import {getTestQuestions} from '../../../../../../service/getTestQuestions';
 import {Text, useTheme} from 'react-native-paper';
 import {useEffect} from 'react';
 import {FlatList} from 'react-native';

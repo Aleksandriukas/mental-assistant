@@ -51,6 +51,7 @@ export default function Result() {
     // );
 
     queryClient.invalidateQueries({queryKey: ['tests', testSetId]});
+    queryClient.invalidateQueries({queryKey: ['testSets']});
 
     linkTo(`/main/mentalTest/${testSetId}`);
   };

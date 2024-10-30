@@ -11,12 +11,10 @@ export type TestSetType = {
   completedTests: number;
 };
 
-export const getTestSets = (): Promise<TestSetType[]> => {
-  return new Promise(async resolve => {
-    const user = await supabase.auth.getUser();
-    const {data} = await supabase.rpc('get_test_set_summary', {
-      user_id: user.data.user?.id,
-    });
-    resolve(data);
+export const getTestSets = async (): Promise<TestSetType[]> => {
+  const user = await supabase.auth.getUser();
+  const {data} = await supabase.rpc('get_test_set_summary', {
+    user_id: user.data.user?.id,
   });
+  return data;
 };
