@@ -8,9 +8,7 @@ export type ResultType = {
   testId: number;
 };
 
-export const getTestResult = (id: number): Promise<ResultType[]> => {
-  return new Promise(async resolve => {
-    const {data} = await supabase.from('testResult').select().eq('id', id);
-    resolve(data as ResultType[]);
-  });
+export const getTestResult = async (id: number): Promise<ResultType> => {
+  const {data} = await supabase.from('testResult').select().eq('id', id);
+  return data?.at(0);
 };

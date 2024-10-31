@@ -1,13 +1,14 @@
 import {useQuery, useQueryClient} from '@tanstack/react-query';
-import {useParams} from '../../../../../../../charon';
-import {Stack} from '../../../../../../components';
+import {useParams} from '../../../../../../charon';
+import {Stack} from '../../../../../components';
 import {Appbar, Button, Text} from 'react-native-paper';
 import {useLinkTo} from '@react-navigation/native';
-import {getTestResult} from '../../../../../../service/getTestResult';
+import {getTestResult} from '../../../../../service/getTestResult';
 import {View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useEffect} from 'react';
-import {TestInfoType} from '../../../../../../service/getTestsInfo';
+import {TestInfoType} from '../../../../../service/getTestsInfo';
+import {TestSetType} from '../../../../../service/getTestSetInfo';
 
 type Result = 'Good' | 'Average' | 'Bad';
 export type ResultType = {
@@ -26,12 +27,12 @@ const getTitle = (type: Result) => {
 };
 
 export default function Result() {
-  const {id, testSetId} = useParams();
+  const {id} = useParams();
 
   const {bottom} = useSafeAreaInsets();
 
   const {data} = useQuery({
-    queryKey: ['test', id, 'result'],
+    queryKey: ['testResult', id],
     queryFn: () => getTestResult(Number(id)),
   });
 
@@ -40,19 +41,18 @@ export default function Result() {
   const linkTo = useLinkTo();
 
   const close = () => {
-    // queryClient.setQueryData(
-    //   ['tests', testSetId],
-    //   (oldData: TestInfoType[]) => {
-    //     const oldDataCopy = [...oldData];
+    queryClient.setQueryData(['tests'], (oldData: TestInfoType[]) => {
+      const oldDataCopy = [...oldData];
+      oldDataCopy.find(item => item.id === Number(data?.testId))!.completed =
+        true;
+      return oldDataCopy;
+    });
+    queryClient.setQueryData(['testSet'], (oldData: TestSetType) => {
+      oldData.completedTests += 1;
+      return oldData;
+    });
 
-    //     oldDataCopy.find(item => item.id === Number(id))!.completed = true;
-    //     return oldDataCopy;
-    //   },
-    // );
-
-    queryClient.invalidateQueries({queryKey: ['tests', testSetId]});
-
-    linkTo(`/main/mentalTest/${testSetId}`);
+    linkTo(`/main/mentalTest`);
   };
 
   return (
@@ -61,8 +61,8 @@ export default function Result() {
         <Appbar.Content title="Test Result" />
       </Appbar.Header>
       <View style={{padding: 24, flex: 1}}>
-        <Text>Your result is: {data && data[0].result}</Text>
-        <Text>{data && data[0].description}</Text>
+        <Text>Your result is: {data?.result}</Text>
+        <Text>{data && data?.description}</Text>
       </View>
       <View
         style={{

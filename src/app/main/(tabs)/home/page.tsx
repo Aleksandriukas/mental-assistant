@@ -1,4 +1,4 @@
-import {Surface, Text, useTheme} from 'react-native-paper';
+import {ActivityIndicator, Surface, Text, useTheme} from 'react-native-paper';
 import {StateLayer} from '../../../../components';
 import {useEffect, useState} from 'react';
 import {
@@ -19,9 +19,11 @@ import {
   StrokeCap,
 } from '@shopify/react-native-skia';
 import {useLinkTo} from '../../../../../charon';
-import {getTestSets, TestSetType} from '../../../../service/getTestSets';
+import {getTestSetInfo} from '../../../../service/getTestSetInfo';
 import {useQuery} from '@tanstack/react-query';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import DailyTest from '../../../../components/DailyTest/DailyTest';
+import {getDailyTestInfo} from '../../../../service/getDailyTestInfo';
+import {getDailyTestQuestions} from '../../../../service/getDailyTestQuestions';
 
 export default function DailyPage() {
   const {top} = useSafeAreaInsets();
@@ -29,11 +31,16 @@ export default function DailyPage() {
   const linkTo = useLinkTo();
 
   const {data, isLoading} = useQuery({
-    queryKey: ['testSets'],
-    queryFn: getTestSets,
+    queryKey: ['testSet'],
+    queryFn: getTestSetInfo,
   });
 
-  if (isLoading) {
+  const dailyTestQuery = useQuery({
+    queryKey: ['dailyTest'],
+    queryFn: getDailyTestInfo,
+  });
+
+  if (isLoading || dailyTestQuery.isLoading) {
     return (
       <View
         style={{
@@ -43,7 +50,7 @@ export default function DailyPage() {
           gap: 12,
           alignItems: 'center',
         }}>
-        <Icon name="hourglass-empty" size={60} color="#6200ee" />
+        <ActivityIndicator />
       </View>
     );
   }
@@ -56,37 +63,32 @@ export default function DailyPage() {
         marginHorizontal: 24,
         gap: 12,
       }}>
-      {data?.map((dataElement: TestSetType) => (
-        <Test
-          key={dataElement.id}
-          title={dataElement.title}
-          shortDescription={dataElement.shortDescription}
-          completed={dataElement.completedTests}
-          total={dataElement.totalTests}
-          onPress={() => {
-            linkTo(`/main/mentalTest/${dataElement.id}`);
-          }}
-        />
-      ))}
+      <Test
+        completed={data?.completedTests ?? 0}
+        total={data?.totalTests ?? 0}
+        onPress={() => {
+          linkTo(`/main/mentalTest`);
+        }}
+      />
+      <DailyTest
+        onPress={() => {}}
+        isCompleted={dailyTestQuery.data?.isCompleted ?? true}
+        streak={
+          (dailyTestQuery.data?.streakCount ?? 0) +
+          (dailyTestQuery.data?.isCompleted ? 1 : 0)
+        }
+      />
     </ScrollView>
   );
 }
 
 type TestProps = {
   onPress: () => void;
-  title: string;
-  shortDescription: string;
   completed: number;
   total: number;
 };
 
-const Test = ({
-  completed,
-  onPress,
-  total,
-  title,
-  shortDescription,
-}: TestProps) => {
+const Test = ({completed, onPress, total}: TestProps) => {
   const [pressed, setPressed] = useState(false);
 
   const {colors} = useTheme();
@@ -114,8 +116,11 @@ const Test = ({
         }}
         elevation={2}>
         <View style={{flex: 2, gap: 6}}>
-          <Text variant="titleLarge">{title}</Text>
-          <Text variant="bodyMedium">{shortDescription}</Text>
+          <Text variant="titleLarge">Complete tests</Text>
+          <Text variant="bodyMedium">
+            Tests will help us to give you suggestions and track you mental
+            health
+          </Text>
         </View>
         <View style={{flex: 1}}>
           <CircularProgress
