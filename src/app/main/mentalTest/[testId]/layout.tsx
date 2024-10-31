@@ -1,8 +1,8 @@
 import {PropsWithChildren, useEffect, useRef, useState} from 'react';
 import {TestContext} from './TestContext';
 import {useQuery, useQueryClient} from '@tanstack/react-query';
-import {useParams} from '../../../../../../charon';
-import {getTestQuestions} from '../../../../../service/getTestQuestions';
+import {useParams} from '../../../../../charon';
+import {getTestQuestions} from '../../../../service/getTestQuestions';
 import {Dimensions, View} from 'react-native';
 import {Appbar, Button, useTheme} from 'react-native-paper';
 import Animated, {
@@ -10,14 +10,14 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import {Stack} from '../../../../../components';
+import {Stack} from '../../../../components';
 import {useLinkTo, useNavigation} from '@react-navigation/native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {getTestResult} from '../../../../../service/getTestResult';
+import {getTestResult} from '../../../../service/getTestResult';
 import {
   setTestResults,
   TestResultAnswer,
-} from '../../../../../service/setTestResult';
+} from '../../../../service/setTestResult';
 
 export default function TestLayout({children}: PropsWithChildren<{}>) {
   const windowWidth = Dimensions.get('window').width;
@@ -30,7 +30,7 @@ export default function TestLayout({children}: PropsWithChildren<{}>) {
 
   const linkTo = useLinkTo();
 
-  const {testSetId, testId} = useParams();
+  const {testId} = useParams();
 
   const {data} = useQuery({
     queryKey: ['test', testId],
@@ -77,7 +77,7 @@ export default function TestLayout({children}: PropsWithChildren<{}>) {
 
     setIsLoading(false);
 
-    linkTo(`/main/mentalTest/${testSetId}/result/${resultId}`);
+    linkTo(`/main/mentalTest/result/${resultId}`);
   };
   if (!data) return <View></View>;
 
@@ -124,9 +124,7 @@ export default function TestLayout({children}: PropsWithChildren<{}>) {
                   return;
                 }
                 currentIndex.current -= 1;
-                linkTo(
-                  `/main/mentalTest/${testSetId}/${testId}/${currentIndex.current}`,
-                );
+                linkTo(`/main/mentalTest/${testId}/${currentIndex.current}`);
               }}>
               Back
             </Button>
@@ -144,9 +142,7 @@ export default function TestLayout({children}: PropsWithChildren<{}>) {
                 }
 
                 currentIndex.current += 1;
-                linkTo(
-                  `/main/mentalTest/${testSetId}/${testId}/${currentIndex.current}`,
-                );
+                linkTo(`/main/mentalTest/${testId}/${currentIndex.current}`);
               }}>
               {currentIndex.current === data.length ? 'Complete' : 'Next'}
             </Button>

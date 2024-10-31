@@ -2,19 +2,17 @@ import {Appbar, Avatar, Card, Text} from 'react-native-paper';
 import {useLinkTo, useNavigation} from '@react-navigation/native';
 import {FlatList, View} from 'react-native';
 import {useQuery, useQueryClient} from '@tanstack/react-query';
-import {AnimatedPressable, Stack, StateLayer} from '../../../../components';
-import {getTestsInfo, TestInfoType} from '../../../../service/getTestsInfo';
-import {useParams} from '../../../../../charon';
-import {getTestQuestions} from '../../../../service/getTestQuestions';
+import {AnimatedPressable, Stack, StateLayer} from '../../../components';
+import {getTestsInfo, TestInfoType} from '../../../service/getTestsInfo';
+import {useParams} from '../../../../charon';
+import {getTestQuestions} from '../../../service/getTestQuestions';
 
 export default function ChatPage() {
   const linkTo = useLinkTo();
 
-  const {testSetId} = useParams();
-
   const {data} = useQuery({
-    queryKey: ['tests', testSetId],
-    queryFn: () => getTestsInfo(Number(testSetId)),
+    queryKey: ['tests'],
+    queryFn: getTestsInfo,
   });
   // sort to completed be at the end
   const tests = data?.sort((a, b) => {
@@ -50,7 +48,7 @@ export default function ChatPage() {
                   queryKey: ['test', item.id],
                   queryFn: () => getTestQuestions(item.id),
                 });
-                linkTo(`/main/mentalTest/${testSetId}/${item.id}/0`);
+                linkTo(`/main/mentalTest/${item.id}/0`);
               }}
               id={item.id}
               completed={item.completed}
