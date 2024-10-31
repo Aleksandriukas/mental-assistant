@@ -20,27 +20,44 @@ import {
 } from '@shopify/react-native-skia';
 import {useLinkTo} from '../../../../../charon';
 import {getTestSetInfo} from '../../../../service/getTestSetInfo';
-import {useQuery} from '@tanstack/react-query';
+import {useQueries, useQuery} from '@tanstack/react-query';
 import DailyTest from '../../../../components/DailyTest/DailyTest';
 import {getDailyTestInfo} from '../../../../service/getDailyTestInfo';
-import {getDailyTestQuestions} from '../../../../service/getDailyTestQuestions';
+import {getDailyLevelsEnum} from '../../../../service/getDailyLevelsEnum';
+import {getDailyStatistics} from '../../../../service/getDailyStatistics';
+import {getAdvices} from '../../../../service/getAdvices';
 
 export default function DailyPage() {
   const {top} = useSafeAreaInsets();
 
   const linkTo = useLinkTo();
 
-  const {data, isLoading} = useQuery({
-    queryKey: ['testSet'],
-    queryFn: getTestSetInfo,
+  const results = useQueries({
+    queries: [
+      {
+        queryKey: ['testSet'],
+        queryFn: getTestSetInfo,
+      },
+      {
+        queryKey: ['dailyTest'],
+        queryFn: getDailyTestInfo,
+      },
+      {
+        queryKey: ['dailyLevelsEnum'],
+        queryFn: getDailyLevelsEnum,
+      },
+      {
+        queryKey: ['dailyStatistics'],
+        queryFn: getDailyStatistics,
+      },
+      {
+        queryKey: ['advices'],
+        queryFn: getAdvices,
+      },
+    ],
   });
 
-  const dailyTestQuery = useQuery({
-    queryKey: ['dailyTest'],
-    queryFn: getDailyTestInfo,
-  });
-
-  if (isLoading || dailyTestQuery.isLoading) {
+  if (results.some(result => result.isLoading)) {
     return (
       <View
         style={{
@@ -64,18 +81,18 @@ export default function DailyPage() {
         gap: 12,
       }}>
       <Test
-        completed={data?.completedTests ?? 0}
-        total={data?.totalTests ?? 0}
+        completed={results[0].data?.completedTests ?? 0}
+        total={results[0].data?.totalTests ?? 0}
         onPress={() => {
           linkTo(`/main/mentalTest`);
         }}
       />
       <DailyTest
         onPress={() => {}}
-        isCompleted={dailyTestQuery.data?.isCompleted ?? true}
+        isCompleted={results[1].data?.isCompleted ?? true}
         streak={
-          (dailyTestQuery.data?.streakCount ?? 0) +
-          (dailyTestQuery.data?.isCompleted ? 1 : 0)
+          (results[1].data?.streakCount ?? 0) +
+          (results[1].data?.isCompleted ? 1 : 0)
         }
       />
     </ScrollView>
