@@ -24,6 +24,9 @@ import {useQuery} from '@tanstack/react-query';
 import DailyTest from '../../../../components/DailyTest/DailyTest';
 import {getDailyTestInfo} from '../../../../service/getDailyTestInfo';
 import {getDailyTestQuestions} from '../../../../service/getDailyTestQuestions';
+import {getDailyEnumLevels} from '../../../../service/getDailyEnumLevels';
+import {getDailyStatistics} from '../../../../service/getDailyStatistics';
+import {getAdvices} from '../../../../service/getAdvices';
 
 export default function DailyPage() {
   const {top} = useSafeAreaInsets();
@@ -40,7 +43,28 @@ export default function DailyPage() {
     queryFn: getDailyTestInfo,
   });
 
-  if (isLoading || dailyTestQuery.isLoading) {
+  const dailyEnumLevels = useQuery({
+    queryKey: ['dailyEnumLevels'],
+    queryFn: getDailyEnumLevels,
+  });
+
+  const dailyStatistics = useQuery({
+    queryKey: ['dailyStatistics'],
+    queryFn: getDailyStatistics,
+  });
+
+  const dailyAdvices = useQuery({
+    queryKey: ['advices'],
+    queryFn: getAdvices,
+  });
+
+  if (
+    isLoading ||
+    dailyTestQuery.isLoading ||
+    dailyEnumLevels.isLoading ||
+    dailyStatistics.isLoading ||
+    dailyAdvices.isLoading
+  ) {
     return (
       <View
         style={{
