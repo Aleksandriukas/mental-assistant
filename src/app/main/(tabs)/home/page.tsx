@@ -43,7 +43,7 @@ export default function DailyPage() {
         queryFn: getDailyTestInfo,
       },
       {
-        queryKey: ['dailyEnumLevels'],
+        queryKey: ['dailyLevelsEnum'],
         queryFn: getDailyLevelsEnum,
       },
       {
