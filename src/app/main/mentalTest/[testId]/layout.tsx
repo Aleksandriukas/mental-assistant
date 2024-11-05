@@ -45,11 +45,9 @@ export default function TestLayout({children}: PropsWithChildren<{}>) {
 
   const currentIndex = useRef(0);
 
-  const [clientAnswers, setClientAnswers] = useState<string[]>([]);
-
-  useEffect(() => {
-    setClientAnswers(new Array(data?.length).fill(''));
-  }, []);
+  const [clientAnswers, setClientAnswers] = useState<string[]>(
+    new Array(data?.length).fill(''),
+  );
 
   const progressStyle = useAnimatedStyle(() => {
     return {
@@ -80,7 +78,7 @@ export default function TestLayout({children}: PropsWithChildren<{}>) {
     linkTo(`/main/mentalTest/result/${resultId}`);
   };
   if (!data) return <View></View>;
-
+  console.log(clientAnswers[currentIndex.current]);
   return (
     <TestContext.Provider value={{clientAnswers, setClientAnswers}}>
       <Stack style={{width: '100%', height: '100%'}}>
@@ -129,6 +127,7 @@ export default function TestLayout({children}: PropsWithChildren<{}>) {
               Back
             </Button>
             <Button
+              disabled={!Boolean(clientAnswers[currentIndex.current])}
               loading={isLoading}
               mode="contained"
               onPress={() => {
@@ -144,7 +143,7 @@ export default function TestLayout({children}: PropsWithChildren<{}>) {
                 currentIndex.current += 1;
                 linkTo(`/main/mentalTest/${testId}/${currentIndex.current}`);
               }}>
-              {currentIndex.current === data.length ? 'Complete' : 'Next'}
+              {currentIndex.current + 1 === data.length ? 'Complete' : 'Next'}
             </Button>
           </View>
         </View>

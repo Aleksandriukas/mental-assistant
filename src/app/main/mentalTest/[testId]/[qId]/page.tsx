@@ -57,6 +57,7 @@ export default function Question() {
         renderItem={({index, item}) => {
           return (
             <AnswerItem
+              accessibilityLabel={`answer-${index}`}
               checked={answer === answers[index]}
               title={item}
               onPress={() => {
@@ -74,10 +75,12 @@ const AnswerItem = ({
   checked,
   title,
   onPress,
+  accessibilityLabel,
 }: {
   checked: boolean;
   title: string;
   onPress: () => void;
+  accessibilityLabel?: string;
 }) => {
   const progress = useSharedValue(0);
 
@@ -109,6 +112,7 @@ const AnswerItem = ({
 
   return (
     <AnimatedPressable
+      accessibilityLabel={accessibilityLabel}
       stateLayerProps={{style: {borderRadius: 12}}}
       onPress={() => {
         onPress();

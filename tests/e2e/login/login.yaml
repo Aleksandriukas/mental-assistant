@@ -1,0 +1,12 @@
+appId: com.mentalassistant
+---
+- clearState
+- launchApp
+- tapOn: 'Email'
+- inputText: 'maestro@gmail.com'
+- hideKeyboard
+- tapOn: 'Password'
+- inputText: '12345678'
+- hideKeyboard
+- tapOn: 'Sign in'
+- assertVisible: 'Complete tests'

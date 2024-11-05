@@ -40,7 +40,7 @@ export default function ChatPage() {
 
       <FlatList
         data={data}
-        renderItem={({item}) => {
+        renderItem={({item, index}) => {
           return (
             <TestItem
               onPress={async () => {
@@ -56,6 +56,7 @@ export default function ChatPage() {
               shortDescription={item.shortDescription}
               title={item.title}
               icon={item.icon}
+              accessibilityLabel={`test-${index}`}
             />
           );
         }}
@@ -66,6 +67,7 @@ export default function ChatPage() {
 
 type TestItemProps = {
   onPress: () => void;
+  accessibilityLabel?: string;
 } & TestInfoType;
 
 const TestItem = ({
@@ -74,10 +76,12 @@ const TestItem = ({
   time,
   icon,
   completed,
+  accessibilityLabel,
   onPress,
 }: TestItemProps) => {
   return (
     <AnimatedPressable
+      accessibilityLabel={accessibilityLabel}
       onPress={() => {
         onPress();
       }}

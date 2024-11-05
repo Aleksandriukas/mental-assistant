@@ -5,6 +5,8 @@ import {useForm} from 'react-hook-form';
 import {TouchableOpacity, View, KeyboardAvoidingView} from 'react-native';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {supabase} from '../../../lib/supabase';
+import {deleteTestsFromMaestro} from '../../../service/resetMaestroAccount';
+import {useQueryClient} from '@tanstack/react-query';
 
 type FormValues = {
   email: String;
@@ -23,7 +25,12 @@ export default function AuthPage() {
     defaultValues: {email: '', password: ''},
   });
 
+  const queryClient = useQueryClient();
+
   const onSubmit = async (data: FormValues) => {
+    if (data.email.toString() == 'maestro@gmail.com') {
+      await deleteTestsFromMaestro();
+    }
     const {error} = await supabase.auth.signInWithPassword({
       email: data.email.toString(),
       password: data.password.toString(),
@@ -60,11 +67,16 @@ export default function AuthPage() {
           },
         }}
         label="Email"
+        accessibilityLabel="Email"
         required
         name="email"
         control={control}
       />
-      <PasswordInput name="password" control={control} />
+      <PasswordInput
+        accessibilityLabel="Password"
+        name="password"
+        control={control}
+      />
       <Button
         style={{width: '100%'}}
         mode="contained"
