@@ -78,7 +78,7 @@ export default function TestLayout({children}: PropsWithChildren<{}>) {
     linkTo(`/main/mentalTest/result/${resultId}`);
   };
   if (!data) return <View></View>;
-
+  console.log(clientAnswers[currentIndex.current]);
   return (
     <TestContext.Provider value={{clientAnswers, setClientAnswers}}>
       <Stack style={{width: '100%', height: '100%'}}>
@@ -127,7 +127,7 @@ export default function TestLayout({children}: PropsWithChildren<{}>) {
               Back
             </Button>
             <Button
-              disabled={clientAnswers[currentIndex.current] === ''}
+              disabled={!Boolean(clientAnswers[currentIndex.current])}
               loading={isLoading}
               mode="contained"
               onPress={() => {

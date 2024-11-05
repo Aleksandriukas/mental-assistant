@@ -1,3 +1,20 @@
 appId: com.mentalassistant
 ---
 - runFlow: '../login/login.yaml'
+- tapOn: 'Complete tests'
+- tapOn: 'Memory Test'
+- evalScript: ${output.counter = 0}
+- repeat:
+    while:
+      true: ${output.counter < 4}
+    commands:
+      - tapOn: 'answer-0'
+      - evalScript: ${output.counter = output.counter + 1}
+      - tapOn: 'Next'
+- assertVisible: 'Complete'
+- tapOn: 'Back'
+- tapOn: 'answer-1'
+- tapOn: 'Next'
+- tapOn: 'answer-0'
+- tapOn: 'Complete'
+- assertVisible: 'Test Result'
