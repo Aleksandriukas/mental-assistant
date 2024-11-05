@@ -1,0 +1,23 @@
+appId: com.mentalassistant
+---
+- clearState
+- launchApp
+- longPressOn: 'Register now!'
+- runScript: 'generateEmail.cjs'
+- tapOn: 'Name'
+- inputRandomPersonName
+- hideKeyboard
+- tapOn: 'Surname'
+- inputRandomPersonName
+- hideKeyboard
+- tapOn: 'Email'
+- inputText: 'maestro@gmail.com'
+- hideKeyboard
+- tapOn: 'Password'
+- inputText: '12345678'
+- hideKeyboard
+- tapOn: 'Repeat password'
+- inputText: '12345678'
+- hideKeyboard
+- tapOn: 'Register'
+- assertVisible: 'User already registered'

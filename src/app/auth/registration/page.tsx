@@ -77,14 +77,22 @@ export default function AuthPage() {
           marginTop: 24,
           paddingHorizontal: 24,
         }}>
-        <StringInput label="Name" required name="name" control={control} />
         <StringInput
+          accessibilityLabel="Name"
+          label="Name"
+          required
+          name="name"
+          control={control}
+        />
+        <StringInput
+          accessibilityLabel="Surname"
           label="Surname"
           required
           name="surname"
           control={control}
         />
         <StringInput
+          accessibilityLabel="Email"
           rules={{
             pattern: {
               value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -96,8 +104,16 @@ export default function AuthPage() {
           name="email"
           control={control}
         />
-        <PasswordInput name="password" control={control} />
-        <PasswordInput name="rPassword" control={control} />
+        <PasswordInput
+          accessibilityLabel="Password"
+          name="password"
+          control={control}
+        />
+        <PasswordInput
+          accessibilityLabel="Repeat password"
+          name="rPassword"
+          control={control}
+        />
         {errors.root?.serverError.type === 'registerFail' && (
           <Text
             style={{

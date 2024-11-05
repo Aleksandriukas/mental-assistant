@@ -68,11 +68,16 @@ export default function AuthPage() {
           },
         }}
         label="Email"
+        accessibilityLabel="Email"
         required
         name="email"
         control={control}
       />
-      <PasswordInput name="password" control={control} />
+      <PasswordInput
+        accessibilityLabel="Password"
+        name="password"
+        control={control}
+      />
       <Button
         style={{width: '100%'}}
         mode="contained"
