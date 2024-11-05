@@ -1,0 +1,3 @@
+appId: com.mentalassistant
+---
+- runFlow: '../login/login.yaml'

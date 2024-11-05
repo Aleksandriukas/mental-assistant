@@ -78,7 +78,7 @@ android {
 
     namespace "com.mentalassistant2"
     defaultConfig {
-        applicationId "com.mentalassistant2"
+        applicationId "com.mentalassistant"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
