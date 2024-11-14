@@ -21,6 +21,7 @@ import {
 import {getDailyTestId} from '../../../../service/getDailyTestId';
 import {setDailyTestResults} from '../../../../service/setDailyTestResults';
 import {DailyTestInfoType} from '../../../../service/getDailyTestInfo';
+import {useTranslation} from 'react-i18next';
 
 export default function TestLayout({children}: PropsWithChildren<{}>) {
   const windowWidth = Dimensions.get('window').width;
@@ -34,6 +35,8 @@ export default function TestLayout({children}: PropsWithChildren<{}>) {
   const linkTo = useLinkTo();
 
   const {testId} = useParams();
+
+  const {t} = useTranslation();
 
   const {data} = useQuery({
     queryKey: ['test', testId],
@@ -137,7 +140,7 @@ export default function TestLayout({children}: PropsWithChildren<{}>) {
                 currentIndex.current -= 1;
                 linkTo(`/main/mentalTest/${testId}/${currentIndex.current}`);
               }}>
-              Back
+              {t('back')}
             </Button>
             <Button
               disabled={!Boolean(clientAnswers[currentIndex.current])}
@@ -156,7 +159,9 @@ export default function TestLayout({children}: PropsWithChildren<{}>) {
                 currentIndex.current += 1;
                 linkTo(`/main/mentalTest/${testId}/${currentIndex.current}`);
               }}>
-              {currentIndex.current + 1 === data.length ? 'Complete' : 'Next'}
+              {currentIndex.current + 1 === data.length
+                ? t('complete')
+                : t('next')}
             </Button>
           </View>
         </View>

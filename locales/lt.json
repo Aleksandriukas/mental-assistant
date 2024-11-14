@@ -1,0 +1,30 @@
+{
+  "settings": "Nustatymai",
+  "fullLanguage": "Lietuvių",
+  "en": "Anglų",
+  "lt": "Lietuvių",
+  "darkMode": "Tamsus režimas",
+  "lightMode": "Šviesus režimas",
+  "logout": "Atsijungti",
+
+  "home": "Pagrindinis",
+  "assistant": "Asistentas",
+  "meditation": "Meditacija",
+
+  "yourAssistant": "Tavo asistentas",
+
+  "completeTests": "Atlik testus",
+  "testFormDescription": "Testai padės mums duoti tau rekomendacijas ir stebėti tavo psichinę sveikatą",
+  "dailyTest": "Dienos testas",
+  "dailyTestDescription": "Dienos testas padės tau stebėti tavo psichinę sveikatą",
+
+  "selectTest": "Pasirink testą",
+
+  "back": "Atgal",
+  "next": "Kitas",
+  "complete": "Baigti",
+
+  "testResults": "Testo rezultatai",
+  "yourResultIs": "Tavo rezultatas yra",
+  "close": "Uždaryti"
+}

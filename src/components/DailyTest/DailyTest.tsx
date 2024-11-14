@@ -2,6 +2,7 @@ import {useState} from 'react';
 import {Pressable, View} from 'react-native';
 import {StateLayer} from '../StateLayer';
 import {Avatar, Badge, Surface, Text, useTheme} from 'react-native-paper';
+import {useTranslation} from 'react-i18next';
 
 type DailyTestProps = {
   onPress: () => void;
@@ -12,6 +13,7 @@ type DailyTestProps = {
 const DailyTest = ({onPress, isCompleted, streak}: DailyTestProps) => {
   const [pressed, setPressed] = useState(false);
 
+  const {t} = useTranslation();
   const {colors} = useTheme();
 
   return (
@@ -49,10 +51,8 @@ const DailyTest = ({onPress, isCompleted, streak}: DailyTestProps) => {
               {`${streak}🔥`}
             </Badge>
           )}
-          <Text variant="titleLarge">Daily Test</Text>
-          <Text variant="bodyMedium">
-            Daily test will help you track your mental health
-          </Text>
+          <Text variant="titleLarge">{t('dailyTest')}</Text>
+          <Text variant="bodyMedium">{t('dailyTestDescription')}</Text>
           {isCompleted ? (
             <Avatar.Icon
               icon="check-circle-outline"

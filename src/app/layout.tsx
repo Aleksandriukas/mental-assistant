@@ -7,6 +7,7 @@ import {MD3DarkTheme} from 'react-native-paper';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {MainContext, MessageType} from './MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import i18n from '../../i18n';
 
 const queryClient = new QueryClient();
 
@@ -16,6 +17,33 @@ export default function MainLayout({children}: PropsWithChildren<{}>) {
   const [messages, setMessages] = useState<MessageType[]>([]);
 
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
+  useEffect(() => {
+    const loadLanguage = async () => {
+      try {
+        const storedLanguage = await AsyncStorage.getItem('language');
+        if (storedLanguage) {
+          i18n.changeLanguage(storedLanguage);
+        } else {
+          i18n.changeLanguage('en');
+        }
+      } catch (error) {
+        console.error('Failed to load language:', error);
+      }
+    };
+    loadLanguage();
+  });
+
+  useEffect(() => {
+    const saveLanguage = async () => {
+      try {
+        await AsyncStorage.setItem('language', i18n.language);
+      } catch (error) {
+        console.error('Failed to save language:', error);
+      }
+    };
+    saveLanguage();
+  }, [i18n.language]);
 
   useEffect(() => {
     const loadTheme = async () => {

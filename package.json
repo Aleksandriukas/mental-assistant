@@ -10,6 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@gorhom/bottom-sheet": "^5.0.5",
     "@react-navigation/bottom-tabs": "^6.6.1",
     "@react-navigation/devtools": "^6.0.27",
     "@react-navigation/native": "^6.1.18",
@@ -19,8 +20,12 @@
     "@tanstack/react-query": "^5.59.15",
     "@types/path-browserify": "^1.0.3",
     "axios": "^1.7.7",
+    "i18next": "^23.16.5",
     "path-browserify": "^1.0.1",
     "react-hook-form": "^7.53.1",
+    "react-i18next": "^15.1.1",
+    "react-native-country-flag": "^2.0.2",
+    "react-native-gesture-handler": "^2.21.0",
     "react-native-openai": "^0.6.1",
     "react-native-paper": "^5.12.5",
     "react-native-reanimated": "3.10",

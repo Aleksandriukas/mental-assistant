@@ -66,7 +66,7 @@ export const Tab = ({icon, isFocused, label, onPress}: TabProps) => {
       onPressOut={onPressOut}
       onPress={onPress}
       style={{gap: 4, alignItems: 'center'}}>
-      <View>
+      <View style={{alignItems: 'center'}}>
         <Animated.View
           style={[
             animatedStyle,
@@ -80,7 +80,11 @@ export const Tab = ({icon, isFocused, label, onPress}: TabProps) => {
           ]}
         />
         <StateLayer pressed={pressed} style={{borderRadius: 24}} />
-        <View style={{paddingHorizontal: 20, paddingVertical: 8}}>
+        <View
+          style={{
+            paddingHorizontal: 20,
+            paddingVertical: 8,
+          }}>
           <Icon
             source={icon}
             color={isFocused ? colors.onPrimary : colors.onSurface}

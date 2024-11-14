@@ -1,9 +1,10 @@
 import {ActivityIndicator, Surface, Text, useTheme} from 'react-native-paper';
 import {StateLayer} from '../../../../components';
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {
   Animated,
   Pressable,
+  RefreshControl,
   ScrollView,
   StyleProp,
   StyleSheet,
@@ -20,17 +21,20 @@ import {
 } from '@shopify/react-native-skia';
 import {useLinkTo} from '../../../../../charon';
 import {getTestSetInfo} from '../../../../service/getTestSetInfo';
-import {useQueries, useQuery} from '@tanstack/react-query';
+import {useQueries} from '@tanstack/react-query';
 import DailyTest from '../../../../components/DailyTest/DailyTest';
 import {getDailyTestInfo} from '../../../../service/getDailyTestInfo';
 import {getDailyLevelsEnum} from '../../../../service/getDailyLevelsEnum';
 import {getDailyStatistics} from '../../../../service/getDailyStatistics';
 import {getAdvices} from '../../../../service/getAdvices';
+import {useTranslation} from 'react-i18next';
 
 export default function DailyPage() {
   const {top} = useSafeAreaInsets();
 
   const linkTo = useLinkTo();
+
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const results = useQueries({
     queries: [
@@ -57,6 +61,14 @@ export default function DailyPage() {
     ],
   });
 
+  const refresh = useCallback(async () => {
+    setIsRefreshing(true);
+    results.forEach(result => {
+      result.refetch();
+    });
+    setIsRefreshing(false);
+  }, []);
+
   if (results.some(result => result.isLoading)) {
     return (
       <View
@@ -74,6 +86,9 @@ export default function DailyPage() {
 
   return (
     <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={isRefreshing} onRefresh={refresh} />
+      }
       contentContainerStyle={{
         flex: 1,
         paddingTop: top + 12,
@@ -113,6 +128,8 @@ const Test = ({completed, onPress, total}: TestProps) => {
 
   const {colors} = useTheme();
 
+  const {t} = useTranslation();
+
   return (
     <Pressable
       style={{width: '100%'}}
@@ -136,11 +153,8 @@ const Test = ({completed, onPress, total}: TestProps) => {
         }}
         elevation={2}>
         <View style={{flex: 2, gap: 6}}>
-          <Text variant="titleLarge">Complete tests</Text>
-          <Text variant="bodyMedium">
-            Tests will help us to give you suggestions and track you mental
-            health
-          </Text>
+          <Text variant="titleLarge">{t('completeTests')}</Text>
+          <Text variant="bodyMedium">{t('testFormDescription')}</Text>
         </View>
         <View style={{flex: 1}}>
           <CircularProgress

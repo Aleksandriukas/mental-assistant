@@ -1,0 +1,30 @@
+{
+  "settings": "Settings",
+  "fullLanguage": "English",
+  "en": "English",
+  "lt": "Lithuanian",
+  "darkMode": "Dark mode",
+  "lightMode": "Light mode",
+  "logout": "Log out",
+
+  "home": "Home",
+  "assistant:": "Assistant",
+  "meditation": "Meditation",
+
+  "yourAssistant": "Your assistant",
+
+  "completeTests": "Complete tests",
+  "testFormDescription": "Tests will help us to give you suggestions and track you mental health",
+  "dailyTest": "Daily test",
+  "dailyTestDescription": "Daily test will help you track your mental health",
+
+  "selectTest": "Select test",
+
+  "back": "Back",
+  "next": "Next",
+  "complete": "Complete",
+
+  "testResults": "Test results",
+  "yourResultIs": "Your result is",
+  "close": "Close"
+}
