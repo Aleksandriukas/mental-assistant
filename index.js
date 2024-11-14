@@ -2,6 +2,7 @@ import {AppRegistry} from 'react-native';
 import {name as appName} from './app.json';
 import {Router} from './charon';
 import {fetchUserData} from './src/utils/fetchUserData';
+import './i18n';
 
 const context = require.context(
   './src/app',
