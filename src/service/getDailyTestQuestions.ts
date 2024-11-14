@@ -1,17 +1,7 @@
 import {supabase} from '../lib/supabase';
+import {QuestionType} from './getTestQuestions';
 
-export type DailyAnswerType = {
-  answer: string;
-  weight: number;
-};
-
-export type DailyQuestionType = {
-  id: number;
-  question: string;
-  answers: DailyAnswerType[];
-};
-
-export const getDailyTestQuestions = async (): Promise<DailyQuestionType[]> => {
-  const {data} = await supabase.from('dailyQuestions').select();
-  return data as DailyQuestionType[];
+export const getDailyTestQuestions = async (): Promise<QuestionType[]> => {
+  const {data} = await supabase.rpc('get_daily_test_questions');
+  return data as QuestionType[];
 };

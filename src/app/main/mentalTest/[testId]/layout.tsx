@@ -18,6 +18,9 @@ import {
   setTestResults,
   TestResultAnswer,
 } from '../../../../service/setTestResult';
+import {getDailyTestId} from '../../../../service/getDailyTestId';
+import {setDailyTestResults} from '../../../../service/setDailyTestResults';
+import {DailyTestInfoType} from '../../../../service/getDailyTestInfo';
 
 export default function TestLayout({children}: PropsWithChildren<{}>) {
   const windowWidth = Dimensions.get('window').width;
@@ -58,6 +61,17 @@ export default function TestLayout({children}: PropsWithChildren<{}>) {
 
   const complete = async () => {
     setIsLoading(true);
+
+    if (Number(testId) === -1) {
+      const dailyTestId = await getDailyTestId();
+      await setDailyTestResults(clientAnswers, dailyTestId ?? 0);
+      queryClient.setQueryData(['dailyTest'], (oldData: DailyTestInfoType) => {
+        oldData.isCompleted = true;
+        return oldData;
+      });
+      linkTo('/main/home');
+      return;
+    }
 
     let answers: TestResultAnswer[] = [];
     if (data) {
