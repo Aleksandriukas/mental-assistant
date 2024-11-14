@@ -2,5 +2,14 @@
   "settings": "Nustatymai",
   "fullLanguage": "Lietuvių",
   "en": "Anglų",
-  "lt": "Lietuvių"
+  "lt": "Lietuvių",
+  "darkMode": "Tamsus režimas",
+  "lightMode": "Šviesus režimas",
+  "logout": "Atsijungti",
+
+  "home": "Pagrindinis",
+  "assistant": "Asistentas",
+  "meditation": "Meditacija",
+
+  "yourAssistant": "Tavo asistentas"
 }

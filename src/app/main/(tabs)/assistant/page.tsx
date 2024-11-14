@@ -4,14 +4,17 @@ import {useLinkTo} from '@react-navigation/native';
 import {FlatList, View} from 'react-native';
 import {ChatRoom} from '../../../../components/ChatRoom/ChatRoom';
 import {rooms} from '../../rooms';
+import {useTranslation} from 'react-i18next';
 
 export default function AssistantPage() {
   const linkTo = useLinkTo();
 
+  const {t} = useTranslation();
+
   return (
     <View style={{flex: 1}}>
       <Appbar.Header elevated>
-        <Appbar.Content title="Your Assistant" />
+        <Appbar.Content title={t('yourAssistant')} />
       </Appbar.Header>
       <Stack style={{flex: 1}}>
         <FlatList

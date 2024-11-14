@@ -41,7 +41,7 @@ export default function SettingsPage() {
 
   const {setTheme, theme} = useSafeContext(MainContext);
 
-  const [bottomSheetIndex, setBottomSheetIndex] = useState<number>(0);
+  const [bottomSheetIndex, setBottomSheetIndex] = useState<number>(-1);
 
   const {colors} = useTheme();
 
@@ -94,7 +94,7 @@ export default function SettingsPage() {
                     }
                   />
                 }
-                text={theme === 'dark' ? 'Dark mode' : 'Light mode'}
+                text={theme === 'dark' ? t('darkMode') : t('lightMode')}
               />
               <ListItem
                 onPress={() => {
@@ -116,7 +116,7 @@ export default function SettingsPage() {
                   queryClient.invalidateQueries();
                   linkTo('/auth/login');
                 }}>
-                Log out
+                {t('logout')}
               </Button>
             </Stack>
           </TouchableWithoutFeedback>
@@ -124,8 +124,14 @@ export default function SettingsPage() {
 
         <BottomSheetModal
           $modal
+          backgroundStyle={{
+            backgroundColor: colors.surface,
+          }}
           containerStyle={{
             backgroundColor: 'rgba(0,0,0,0.5)',
+          }}
+          handleIndicatorStyle={{
+            backgroundColor: colors.onSurface,
           }}
           ref={bottomSheetModalRef}
           onChange={handleSheetChanges}>

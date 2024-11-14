@@ -2,5 +2,14 @@
   "settings": "Settings",
   "fullLanguage": "English",
   "en": "English",
-  "lt": "Lithuanian"
+  "lt": "Lithuanian",
+  "darkMode": "Dark mode",
+  "lightMode": "Light mode",
+  "logout": "Log out",
+
+  "home": "Home",
+  "assistant:": "Assistant",
+  "meditation": "Meditation",
+
+  "yourAssistant": "Your assistant"
 }
