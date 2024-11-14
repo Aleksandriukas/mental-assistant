@@ -9,6 +9,8 @@ export type MessageType = {
 type MainContextType = {
   messages: MessageType[];
   setMessages: React.Dispatch<React.SetStateAction<MessageType[]>>;
+  theme: 'light' | 'dark';
+  setTheme: React.Dispatch<React.SetStateAction<'light' | 'dark'>>;
 };
 
 export const MainContext = createSafeContext<MainContextType>();
