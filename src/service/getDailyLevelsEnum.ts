@@ -6,7 +6,7 @@ export type DailyEnumLevels = {
   anxietyLevel: number;
 };
 
-export const getDailyEnumLevels = async (): Promise<DailyEnumLevels> => {
+export const getDailyLevelsEnum = async (): Promise<DailyEnumLevels> => {
   const user = await supabase.auth.getUser();
   const {data} = await supabase.rpc('get_daily_enum_levels', {
     user_id: user.data.user?.id,

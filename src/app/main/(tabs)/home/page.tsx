@@ -88,7 +88,9 @@ export default function DailyPage() {
         }}
       />
       <DailyTest
-        onPress={() => {}}
+        onPress={() => {
+          if (!results[1].data?.isCompleted) linkTo(`/main/mentalTest/-1/0`);
+        }}
         isCompleted={results[1].data?.isCompleted ?? true}
         streak={
           (results[1].data?.streakCount ?? 0) +
