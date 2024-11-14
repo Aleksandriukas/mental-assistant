@@ -113,7 +113,7 @@ export default function SettingsPage() {
                 mode="contained"
                 onPress={async () => {
                   await supabase.auth.signOut();
-                  queryClient.invalidateQueries();
+                  queryClient.clear();
                   linkTo('/auth/login');
                 }}>
                 {t('logout')}
