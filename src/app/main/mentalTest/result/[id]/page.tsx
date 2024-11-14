@@ -6,9 +6,9 @@ import {useLinkTo} from '@react-navigation/native';
 import {getTestResult} from '../../../../../service/getTestResult';
 import {View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {useEffect} from 'react';
 import {TestInfoType} from '../../../../../service/getTestsInfo';
 import {TestSetType} from '../../../../../service/getTestSetInfo';
+import {useTranslation} from 'react-i18next';
 
 type Result = 'Good' | 'Average' | 'Bad';
 export type ResultType = {
@@ -16,18 +16,10 @@ export type ResultType = {
   description: string;
 };
 
-const getTitle = (type: Result) => {
-  if (type === 'Good') {
-    return 'Congratulations!';
-  }
-  if (type === 'Average') {
-    return 'Good Job!';
-  }
-  return 'Keep Trying!';
-};
-
 export default function Result() {
   const {id} = useParams();
+
+  const {t} = useTranslation();
 
   const {bottom} = useSafeAreaInsets();
 
@@ -41,16 +33,21 @@ export default function Result() {
   const linkTo = useLinkTo();
 
   const close = () => {
-    queryClient.setQueryData(['tests'], (oldData: TestInfoType[]) => {
-      const oldDataCopy = [...oldData];
-      oldDataCopy.find(item => item.id === Number(data?.testId))!.completed =
-        true;
-      return oldDataCopy;
-    });
-    queryClient.setQueryData(['testSet'], (oldData: TestSetType) => {
-      oldData.completedTests += 1;
-      return oldData;
-    });
+    try {
+      queryClient.setQueryData(['tests'], (oldData: TestInfoType[]) => {
+        const oldDataCopy = [...oldData];
+        oldDataCopy.find(item => item.id === Number(data?.testId))!.completed =
+          true;
+        return oldDataCopy;
+      });
+      queryClient.setQueryData(['testSet'], (oldData: TestSetType) => {
+        oldData.completedTests += 1;
+        return oldData;
+      });
+    } catch (e) {
+      console.log(e);
+      queryClient.invalidateQueries();
+    }
 
     linkTo(`/main/mentalTest`);
   };
@@ -58,10 +55,12 @@ export default function Result() {
   return (
     <Stack style={{flex: 1}}>
       <Appbar.Header elevated>
-        <Appbar.Content title="Test Result" />
+        <Appbar.Content title={t('testResults')} />
       </Appbar.Header>
       <View style={{padding: 24, flex: 1}}>
-        <Text>Your result is: {data?.result}</Text>
+        <Text>
+          {t('yourResultIs')} {data?.result}
+        </Text>
         <Text>{data && data?.description}</Text>
       </View>
       <View
@@ -75,7 +74,7 @@ export default function Result() {
           onPress={() => {
             close();
           }}>
-          Close
+          {t('close')}
         </Button>
       </View>
     </Stack>

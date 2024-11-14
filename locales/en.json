@@ -11,5 +11,20 @@
   "assistant:": "Assistant",
   "meditation": "Meditation",
 
-  "yourAssistant": "Your assistant"
+  "yourAssistant": "Your assistant",
+
+  "completeTests": "Complete tests",
+  "testFormDescription": "Tests will help us to give you suggestions and track you mental health",
+  "dailyTest": "Daily test",
+  "dailyTestDescription": "Daily test will help you track your mental health",
+
+  "selectTest": "Select test",
+
+  "back": "Back",
+  "next": "Next",
+  "complete": "Complete",
+
+  "testResults": "Test results",
+  "yourResultIs": "Your result is",
+  "close": "Close"
 }

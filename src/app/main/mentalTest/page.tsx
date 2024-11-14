@@ -6,14 +6,27 @@ import {AnimatedPressable, Stack, StateLayer} from '../../../components';
 import {getTestsInfo, TestInfoType} from '../../../service/getTestsInfo';
 import {useParams} from '../../../../charon';
 import {getTestQuestions} from '../../../service/getTestQuestions';
+import {useTranslation} from 'react-i18next';
+import {useCallback, useState} from 'react';
 
 export default function ChatPage() {
   const linkTo = useLinkTo();
 
-  const {data} = useQuery({
+  const {t} = useTranslation();
+
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const {data, refetch} = useQuery({
     queryKey: ['tests'],
     queryFn: getTestsInfo,
   });
+
+  const refresh = useCallback(async () => {
+    setIsRefreshing(true);
+    await refetch();
+    setIsRefreshing(false);
+  }, []);
+
   // sort to completed be at the end
   const tests = data?.sort((a, b) => {
     if (a.completed && !b.completed) {
@@ -35,10 +48,12 @@ export default function ChatPage() {
             linkTo('/main/home');
           }}
         />
-        <Appbar.Content title="Select test" />
+        <Appbar.Content title={t('selectTest')} />
       </Appbar.Header>
 
       <FlatList
+        onRefresh={refresh}
+        refreshing={isRefreshing}
         data={data}
         renderItem={({item, index}) => {
           return (
