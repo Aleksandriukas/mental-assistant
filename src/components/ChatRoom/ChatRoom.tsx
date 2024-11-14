@@ -1,5 +1,5 @@
 import {Dimensions, Pressable} from 'react-native';
-import {Surface, Text, TouchableRipple} from 'react-native-paper';
+import {Surface, Text} from 'react-native-paper';
 import {StateLayer} from '../StateLayer';
 import {useState} from 'react';
 

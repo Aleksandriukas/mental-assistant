@@ -2,28 +2,24 @@ import {useState} from 'react';
 import {FlatList, View} from 'react-native';
 import {IconButton, Text, TextInput, useTheme} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-
-export type Message = {
-  content: string;
-  isChat: boolean;
-};
+import {useChat} from '../../service/sendMessage';
 
 export type ChatProps = {
-  messages: Message[];
-  onSend: (message: string) => void;
+  name: string;
+  model: string;
 };
 
-export const Chat = ({messages, onSend}: ChatProps) => {
+export const Chat = ({model, name}: ChatProps) => {
   const {colors} = useTheme();
+
+  const {messages, sendNewMessage, isLoading} = useChat({
+    model: model,
+    name: name,
+  });
 
   const insets = useSafeAreaInsets();
 
   const [message, setMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-
-  const sendMessage = () => {
-    onSend(message);
-  };
 
   return (
     <View style={{flex: 1}}>
@@ -33,12 +29,17 @@ export const Chat = ({messages, onSend}: ChatProps) => {
         snapToEnd
         inverted
         contentContainerStyle={{
-          gap: 1,
+          gap: 4,
           paddingHorizontal: 8,
           paddingVertical: 8,
         }}
         renderItem={({item}) => {
-          return <ChatItem content={item.content} isChat={item.isChat} />;
+          return (
+            <ChatItem
+              content={item.message}
+              isChat={item.type === 'Assistant'}
+            />
+          );
         }}
       />
       <View
@@ -58,8 +59,10 @@ export const Chat = ({messages, onSend}: ChatProps) => {
           mode="flat"
         />
         <IconButton
+          loading={isLoading}
           onPress={() => {
-            sendMessage();
+            setMessage('');
+            sendNewMessage(message);
           }}
           icon="send"
         />
