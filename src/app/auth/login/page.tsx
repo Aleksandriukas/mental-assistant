@@ -28,7 +28,7 @@ export default function AuthPage() {
   const queryClient = useQueryClient();
 
   const onSubmit = async (data: FormValues) => {
-    if (data.email.toString() == 'maestro@gmail.com') {
+    if (data.email.toString().toLowerCase() == 'maestro@gmail.com') {
       await deleteTestsFromMaestro();
     }
     const {error} = await supabase.auth.signInWithPassword({
