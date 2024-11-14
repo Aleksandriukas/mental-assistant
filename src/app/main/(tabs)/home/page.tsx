@@ -87,14 +87,14 @@ export default function DailyPage() {
           linkTo(`/main/mentalTest`);
         }}
       />
-      <DailyTest
+      {/* <DailyTest
         onPress={() => {}}
         isCompleted={results[1].data?.isCompleted ?? true}
         streak={
           (results[1].data?.streakCount ?? 0) +
           (results[1].data?.isCompleted ? 1 : 0)
         }
-      />
+      /> */}
     </ScrollView>
   );
 }
