@@ -1,4 +1,8 @@
-import {useQuery, useQueryClient} from '@tanstack/react-query';
+import {
+  QueryClientProvider,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import {useParams} from '../../../../../../charon';
 import {Stack} from '../../../../../components';
 import {Appbar, Button, Text} from 'react-native-paper';
@@ -32,21 +36,14 @@ export default function Result() {
 
   const linkTo = useLinkTo();
 
-  const close = () => {
+  const close = async () => {
     try {
-      queryClient.setQueryData(['tests'], (oldData: TestInfoType[]) => {
-        const oldDataCopy = [...oldData];
-        oldDataCopy.find(item => item.id === Number(data?.testId))!.completed =
-          true;
-        return oldDataCopy;
-      });
-      queryClient.setQueryData(['testSet'], (oldData: TestSetType) => {
-        oldData.completedTests += 1;
-        return oldData;
-      });
+      await queryClient.refetchQueries({queryKey: ['tests']});
+      await queryClient.refetchQueries({queryKey: ['testSet']});
     } catch (e) {
       console.log(e);
-      queryClient.invalidateQueries();
+      queryClient.invalidateQueries({queryKey: ['tests']});
+      queryClient.invalidateQueries({queryKey: ['testSet']});
     }
 
     linkTo(`/main/mentalTest`);
@@ -70,6 +67,7 @@ export default function Result() {
           alignItems: 'flex-end',
         }}>
         <Button
+          loading={Boolean(queryClient.isFetching())}
           mode="contained"
           onPress={() => {
             close();
