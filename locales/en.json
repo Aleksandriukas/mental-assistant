@@ -6,6 +6,7 @@
   "darkMode": "Dark mode",
   "lightMode": "Light mode",
   "logout": "Log out",
+  "logoutConfirmation": "Are you sure you want to log out?",
 
   "home": "Home",
   "assistant:": "Assistant",

@@ -6,6 +6,7 @@
   "darkMode": "Tamsus režimas",
   "lightMode": "Šviesus režimas",
   "logout": "Atsijungti",
+  "logoutConfirmation": "Ar tikrai norite atsijungti?",
 
   "home": "Pagrindinis",
   "assistant": "Asistentas",
