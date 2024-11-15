@@ -37,7 +37,7 @@ const DailyTest = ({onPress, isCompleted, streak}: DailyTestProps) => {
           position: 'relative',
         }}
         elevation={2}>
-        <View style={{flex: 2, gap: 6}}>
+        <View style={{gap: 6}}>
           {streak > 1 && (
             <Badge
               style={{
@@ -52,31 +52,18 @@ const DailyTest = ({onPress, isCompleted, streak}: DailyTestProps) => {
             </Badge>
           )}
           <Text variant="titleLarge">{t('dailyTest')}</Text>
-          <Text variant="bodyMedium">{t('dailyTestDescription')}</Text>
-          {isCompleted ? (
-            <Avatar.Icon
-              accessibilityLabel="done daily test"
-              icon="check-circle-outline"
+          <Text style={{maxHeight: 64}} variant="bodyMedium">
+            {t('dailyTestDescription')}
+          </Text>
+          {!isCompleted && (
+            <Text
               style={{
-                position: 'absolute',
-                backgroundColor: 'transparent',
-                right: -20,
-                bottom: -20,
+                color: '#339CFF',
+                textAlign: 'right',
               }}
-              color="green"
-            />
-          ) : (
-            <Avatar.Icon
-              accessibilityLabel="not done daily test"
-              icon="alert-circle-outline"
-              style={{
-                position: 'absolute',
-                backgroundColor: 'transparent',
-                right: -20,
-                bottom: -20,
-              }}
-              color="yellow"
-            />
+              variant="bodySmall">
+              {t('new')}
+            </Text>
           )}
         </View>
       </Surface>
