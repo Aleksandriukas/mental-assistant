@@ -51,8 +51,10 @@ const DailyTest = ({onPress, isCompleted, streak}: DailyTestProps) => {
               {`${streak}🔥`}
             </Badge>
           )}
-          <Text variant="titleLarge">{t('dailyTest')}</Text>
-          <Text style={{maxHeight: 64}} variant="bodyMedium">
+          <Text numberOfLines={1} variant="titleLarge">
+            {t('dailyTest')}
+          </Text>
+          <Text numberOfLines={3} variant="bodyMedium">
             {t('dailyTestDescription')}
           </Text>
           {!isCompleted && (
