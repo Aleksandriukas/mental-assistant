@@ -63,7 +63,7 @@ export default function ChatPage() {
                   queryKey: ['test', item.id],
                   queryFn: () => getTestQuestions(item.id),
                 });
-                linkTo(`/main/mentalTest/${item.id}/0`);
+                linkTo(`/main/mentalTest/${item.testId}/0`);
               }}
               id={item.id}
               completed={item.completed}
