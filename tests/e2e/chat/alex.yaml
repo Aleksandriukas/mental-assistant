@@ -1,0 +1,14 @@
+appId: com.mentalassistant
+---
+- runFlow: '../login/login.yaml'
+- tapOn: 'Assistant'
+- assertVisible: 'Your assistant'
+- tapOn: 'Alex'
+- assertVisible: 'Alex'
+- tapOn: 'chat-input'
+- inputText: "Hello, I need to test the chat. Can you answer like: 'Hello, my name is {$name}', I need only the string that is inside the quotes without any additional text."
+- tapOn:
+    text: 'send'
+    retryTapIfNoChange: false
+- assertVisible: "Hello, I need to test the chat. Can you answer like: 'Hello, my name is {$name}', I need only the string that is inside the quotes without any additional text."
+- assertVisible: 'Hello, my name is Alex.'

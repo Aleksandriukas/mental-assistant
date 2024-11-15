@@ -52,6 +52,7 @@ export const Chat = ({model, name}: ChatProps) => {
           alignItems: 'flex-end',
         }}>
         <TextInput
+          accessibilityLabel="chat-input"
           onChangeText={setMessage}
           value={message}
           style={{flex: 1}}
@@ -59,6 +60,7 @@ export const Chat = ({model, name}: ChatProps) => {
           mode="flat"
         />
         <IconButton
+          aria-label="send"
           loading={isLoading}
           onPress={() => {
             setMessage('');

@@ -1,0 +1,12 @@
+appId: com.mentalassistant
+---
+- runFlow: '../login/login.yaml'
+- tapOn: 'Settings'
+- tapOn: ' English'
+- assertVisible: 'Select language'
+- assertVisible: ' Lithuanian'
+- tapOn: ' Lithuanian'
+- assertVisible: 'Pagrindinis'
+- stopApp
+- launchApp
+- assertVisible: 'Pagrindinis'

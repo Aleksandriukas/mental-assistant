@@ -55,6 +55,7 @@ const DailyTest = ({onPress, isCompleted, streak}: DailyTestProps) => {
           <Text variant="bodyMedium">{t('dailyTestDescription')}</Text>
           {isCompleted ? (
             <Avatar.Icon
+              accessibilityLabel="done daily test"
               icon="check-circle-outline"
               style={{
                 position: 'absolute',
@@ -66,6 +67,7 @@ const DailyTest = ({onPress, isCompleted, streak}: DailyTestProps) => {
             />
           ) : (
             <Avatar.Icon
+              accessibilityLabel="not done daily test"
               icon="alert-circle-outline"
               style={{
                 position: 'absolute',

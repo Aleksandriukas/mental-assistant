@@ -1,0 +1,13 @@
+appId: com.mentalassistant
+---
+- runFlow: '../login/login.yaml'
+- tapOn: 'Settings'
+- tapOn: ' Log out'
+- assertVisible: 'Are you sure you want to log out?'
+- tapOn:
+    text: 'Log out'
+    index: 1
+- assertVisible: 'Sign in'
+- stopApp
+- launchApp
+- assertVisible: 'Sign in'
