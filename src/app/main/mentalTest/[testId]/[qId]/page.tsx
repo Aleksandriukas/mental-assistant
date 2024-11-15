@@ -3,7 +3,7 @@ import {useParams} from '../../../../../../charon';
 import {AnimatedPressable, Stack} from '../../../../../components';
 import {getTestQuestions} from '../../../../../service/getTestQuestions';
 import {Card, Text, useTheme} from 'react-native-paper';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {FlatList} from 'react-native';
 import Animated, {
   interpolateColor,
@@ -14,9 +14,11 @@ import Animated, {
 import {useTestContext} from '../TestContext';
 import {useSafeContext} from '@sirse-dev/safe-context';
 import {MainContext} from '../../../../MainContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Question() {
   const {testId, qId} = useParams();
+  const [storedLanguage, setStoredLanguage] = useState<string>();
 
   const {data} = useQuery({
     queryKey: ['test', testId],
@@ -43,6 +45,14 @@ export default function Question() {
     );
   }
 
+  useEffect(() => {
+    const getLanguage = async () => {
+      const storedLanguage = await AsyncStorage.getItem('language');
+      setStoredLanguage(storedLanguage ?? '');
+    };
+    getLanguage();
+  }, []);
+
   const question = data[Number(qId)].question;
   const answers = data[Number(qId)].answers;
 
@@ -51,7 +61,11 @@ export default function Question() {
       <FlatList
         ListHeaderComponent={() => (
           <Text style={{paddingVertical: 12}} variant="bodyLarge">
-            {question}
+            {typeof question === 'string'
+              ? question
+              : storedLanguage === 'lt'
+              ? question.lt
+              : question.en}
           </Text>
         )}
         contentContainerStyle={{gap: 4}}
@@ -61,7 +75,11 @@ export default function Question() {
             <AnswerItem
               accessibilityLabel={`answer-${index}`}
               checked={answer === answers[index]}
-              title={item}
+              title={
+                storedLanguage === 'lt' && Number(testId) === -1
+                  ? data[Number(qId)].answerslt?.at(index) ?? ''
+                  : item
+              }
               onPress={() => {
                 setSelectedAnswer(item);
               }}

@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {supabase} from '../lib/supabase';
 
 export type TestInfoType = {
@@ -9,12 +10,15 @@ export type TestInfoType = {
   icon?: string;
   completed: boolean;
   questionCount?: number;
+  testId?: number;
 };
 
 export const getTestsInfo = async (): Promise<TestInfoType[]> => {
+  const storedLanguage = await AsyncStorage.getItem('language');
   const user = await supabase.auth.getUser();
   const {data} = await supabase.rpc('get_test_info', {
     user_id: user.data.user?.id,
+    selected_language: storedLanguage,
   });
   return data;
 };

@@ -38,7 +38,7 @@ const DailyTest = ({onPress, isCompleted, streak}: DailyTestProps) => {
         }}
         elevation={2}>
         <View style={{gap: 6}}>
-          {streak > 1 && (
+          {streak > 0 && (
             <Badge
               style={{
                 position: 'absolute',
