@@ -58,7 +58,8 @@ export default function Result() {
         <Text>
           {t('yourResultIs')} {data?.result}
         </Text>
-        <Text>{data && data?.description}</Text>
+        <Text style={{paddingTop: 16}}>{data && data?.description}</Text>
+        <Text style={{paddingTop: 16}}>{data && data?.resultComment}</Text>
       </View>
       <View
         style={{

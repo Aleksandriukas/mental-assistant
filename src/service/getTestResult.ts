@@ -5,6 +5,7 @@ export type ResultType = {
   created_at?: Date;
   result: string;
   description?: string;
+  resultComment?: string;
   testId: number;
 };
 

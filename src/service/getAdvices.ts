@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {supabase} from '../lib/supabase';
 
 export type AdviceType = {
@@ -7,9 +8,11 @@ export type AdviceType = {
 };
 
 export const getAdvices = async (): Promise<AdviceType[]> => {
+  const storedLanguage = await AsyncStorage.getItem('language');
   const user = await supabase.auth.getUser();
-  const {data, error} = await supabase.rpc('get_personalized_advices', {
+  const {data} = await supabase.rpc('get_personalized_advices', {
     user_id: user.data.user?.id,
+    selected_language: storedLanguage,
   });
   return data as AdviceType[];
 };
