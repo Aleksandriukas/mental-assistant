@@ -38,5 +38,8 @@
   "depressionLevel": "depresijos lygis",
   "anxietyLevel": "nerimo lygis",
   "stressLevel": "streso lygis",
-  "was": "buvo"
+  "was": "buvo",
+
+  "checkStats": "Patikrink savo statistiką čia",
+  "yourStats": "Jūsų statistika"
 }

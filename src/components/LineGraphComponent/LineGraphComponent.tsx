@@ -37,9 +37,9 @@ const fontStyle = {
 };
 const font = matchFont(fontStyle as Partial<any>);
 
-const millisecondsInOneDay = 24 * 60 * 60 * 1000; // 86,400,000 milliseconds
+export const millisecondsInOneDay = 24 * 60 * 60 * 1000; // 86,400,000 milliseconds
 
-const millisecondsIn2Weeks = 14 * millisecondsInOneDay;
+export const millisecondsIn2Weeks = 14 * millisecondsInOneDay;
 
 const LineGraphComponent = ({data}: LineGraphProps) => {
   const [filteredData, setFilteredDate] = useState<
@@ -78,7 +78,7 @@ const LineGraphComponent = ({data}: LineGraphProps) => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <SegmentedButtons
-        style={{width: 'auto'}}
+        style={{width: 'auto', padding: 20}}
         value={mentalType}
         onValueChange={value =>
           setMentalType(
@@ -97,7 +97,7 @@ const LineGraphComponent = ({data}: LineGraphProps) => {
           {value: 'anxietyLevel', label: t('anxiety')},
         ]}
       />
-      <View style={{height: 320, width: Dimensions.get('window').width}}>
+      <View style={{height: 480, width: Dimensions.get('window').width}}>
         {data && (
           <CartesianChart
             domain={{
@@ -113,12 +113,16 @@ const LineGraphComponent = ({data}: LineGraphProps) => {
                 return `${date.getMonth() + 1}-${date.getDate()}`;
               },
               lineColor: colors.secondary,
+              lineWidth: 0,
+              labelColor: colors.secondary,
             }}
             yAxis={[
               {
                 font,
                 lineColor: colors.secondary,
-                tickValues: [0, 40, 80, 120, 160, 200],
+                labelColor: colors.secondary,
+                lineWidth: 0,
+                tickValues: [0, 40, 80, 120, 160, 200, 240, 280],
               },
             ]}
             padding={20}
@@ -139,12 +143,14 @@ const LineGraphComponent = ({data}: LineGraphProps) => {
                   points={points.points}
                   color={colors.primary}
                   strokeWidth={2}
+                  curveType="natural"
                   animate={{type: 'timing', duration: 300}}
                 />
                 <Area
                   points={points.points}
                   color={colors.primary}
                   y0={chartBounds.bottom}
+                  curveType="natural"
                   opacity={0.5}
                   animate={{type: 'timing', duration: 300}}
                 />
@@ -155,7 +161,7 @@ const LineGraphComponent = ({data}: LineGraphProps) => {
       </View>
       {isActive && (
         <View style={{alignItems: 'center'}}>
-          <Text>
+          <Text variant="titleLarge">
             {`${t('your')} ${transformString(mentalType)} ${new Date(
               derivedXValue.value,
             ).toLocaleDateString()} ${t('was')} ${derivedYValue.value}`}

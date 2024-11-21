@@ -28,7 +28,8 @@ import {getDailyLevelsEnum} from '../../../../service/getDailyLevelsEnum';
 import {getDailyStatistics} from '../../../../service/getDailyStatistics';
 import {getAdvices} from '../../../../service/getAdvices';
 import {useTranslation} from 'react-i18next';
-import LineGraphComponent from '../../../../components/LineGraph/LineGraphComponent';
+import LineGraphComponent from '../../../../components/LineGraphComponent/LineGraphComponent';
+import MiniLineGraph from '../../../../components/MiniLineGraph/MiniLineGraph';
 
 export default function DailyPage() {
   const {top} = useSafeAreaInsets();
@@ -114,7 +115,19 @@ export default function DailyPage() {
           (results[1].data?.isCompleted ? 1 : 0)
         }
       />
-      <LineGraphComponent data={results[3].data} />
+      <View style={{flexDirection: 'row', gap: 20}}>
+        <MiniLineGraph
+          data={results[3].data?.map(d => {
+            return {
+              date: new Date(d.created_at).getTime(),
+              stressLevel: d.stressLevel,
+            };
+          })}
+          onPress={() => {
+            linkTo('/main/graphStats');
+          }}
+        />
+      </View>
     </ScrollView>
   );
 }

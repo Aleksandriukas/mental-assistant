@@ -38,5 +38,8 @@
   "depressionLevel": "depression level",
   "anxietyLevel": "anxiety level",
   "stressLevel": "stress level",
-  "was": "was"
+  "was": "was",
+
+  "checkStats": "Check your stats here",
+  "yourStats": "Your statistics"
 }
