@@ -28,6 +28,7 @@ import {getDailyLevelsEnum} from '../../../../service/getDailyLevelsEnum';
 import {getDailyStatistics} from '../../../../service/getDailyStatistics';
 import {getAdvices} from '../../../../service/getAdvices';
 import {useTranslation} from 'react-i18next';
+import LineGraphComponent from '../../../../components/LineGraph/LineGraphComponent';
 
 export default function DailyPage() {
   const {top} = useSafeAreaInsets();
@@ -113,6 +114,7 @@ export default function DailyPage() {
           (results[1].data?.isCompleted ? 1 : 0)
         }
       />
+      <LineGraphComponent data={results[3].data} />
     </ScrollView>
   );
 }

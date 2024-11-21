@@ -28,5 +28,15 @@
 
   "testResults": "Test results",
   "yourResultIs": "Your result is",
-  "close": "Close"
+  "close": "Close",
+
+  "stress": "Stress",
+  "depression": "Depression",
+  "anxiety": "Anxiety",
+
+  "your": "Your",
+  "depressionLevel": "depression level",
+  "anxietyLevel": "anxiety level",
+  "stressLevel": "stress level",
+  "was": "was"
 }

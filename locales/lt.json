@@ -28,5 +28,15 @@
 
   "testResults": "Testo rezultatai",
   "yourResultIs": "Tavo rezultatas yra",
-  "close": "Uždaryti"
+  "close": "Uždaryti",
+
+  "stress": "Stresas",
+  "depression": "Depresija",
+  "anxiety": "Nerimas",
+
+  "your": "Jūsų",
+  "depressionLevel": "depresijos lygis",
+  "anxietyLevel": "nerimo lygis",
+  "stressLevel": "streso lygis",
+  "was": "buvo"
 }
