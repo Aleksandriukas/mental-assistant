@@ -41,5 +41,14 @@
   "was": "buvo",
 
   "checkStats": "Patikrink savo statistiką čia",
-  "yourStats": "Jūsų statistika"
+  "yourStats": "Jūsų statistika",
+  "low": "žemas",
+  "medium": "vidutinis",
+  "high": "aukštas",
+  "whichIs": "kuris yra",
+  "youreFine": "Remiantis testais, jūsų psichinė sveikata atrodo gera. Nieko nereikia daryti.",
+  "seekAdvice": "Jūsų psichinės sveikatos rodiklis atrodo šiek tiek aukštas. Rekomenduojame medituoti, kad sumažintumėte stresą, depresiją ir nerimą.",
+  "getHelp": "Jūsų psichinės sveikatos rodiklis atrodo labai aukštas. Rekomenduojame apsilankyti pas psichologą.",
+  "Low": "Žem",
+  "High": "Auk"
 }

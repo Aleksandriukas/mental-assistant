@@ -5,12 +5,7 @@ import {Button, SegmentedButtons, Text, useTheme} from 'react-native-paper';
 import {DailyTestStatisticType} from '../../service/getDailyStatistics';
 import {Area, CartesianChart, Line, useChartPressState} from 'victory-native';
 import {useDerivedValue} from 'react-native-reanimated';
-import {
-  center,
-  matchFont,
-  Line as SkiaLine,
-  useFont,
-} from '@shopify/react-native-skia';
+import {Circle, matchFont, Line as SkiaLine} from '@shopify/react-native-skia';
 
 type LineGraphProps = {
   data: DailyTestStatisticType[] | undefined;
@@ -41,11 +36,14 @@ export const millisecondsInOneDay = 24 * 60 * 60 * 1000; // 86,400,000 milliseco
 
 export const millisecondsIn2Weeks = 14 * millisecondsInOneDay;
 
+const maxHigh = 240;
+
 const LineGraphComponent = ({data}: LineGraphProps) => {
-  const [filteredData, setFilteredDate] = useState<
+  const [filteredData, setFilteredData] = useState<
     {date: number; points: number}[]
   >([]);
-  const {state, isActive} = useChartPressState({x: 0, y: {points: 0}});
+  const {state} = useChartPressState({x: 0, y: {points: 0}});
+  const [isAnimating, setIsAnimating] = useState<boolean>(false);
   const [mentalType, setMentalType] = useState<
     'anxietyLevel' | 'depressionLevel' | 'stressLevel'
   >('stressLevel');
@@ -62,8 +60,20 @@ const LineGraphComponent = ({data}: LineGraphProps) => {
 
   useEffect(() => {
     if (data) {
-      setFilteredDate(getPoints(data, mentalType));
+      const newFilteredData = getPoints(data, mentalType);
+      newFilteredData.push({
+        date: newFilteredData.at(-1)?.date ?? 0,
+        points: 0,
+      });
+      setFilteredData(newFilteredData);
+      setIsAnimating(true);
     }
+
+    const animationTimeout = setTimeout(() => {
+      setIsAnimating(false);
+    }, 320);
+
+    return () => clearTimeout(animationTimeout);
   }, [mentalType]);
 
   function transformString(input: string): string {
@@ -73,6 +83,16 @@ const LineGraphComponent = ({data}: LineGraphProps) => {
       stressLevel: t('stressLevel'),
     };
     return transformationMap[input] || input;
+  }
+
+  function getLowMediumHigh(derivedYValue: number): String {
+    if (derivedYValue < 100) {
+      return `${t('low')}. ${t('youreFine')}`;
+    } else if (derivedYValue < 180) {
+      return `${t('medium')}. ${t('seekAdvice')}`;
+    } else {
+      return `${t('high')}. ${t('getHelp')}`;
+    }
   }
 
   return (
@@ -89,12 +109,36 @@ const LineGraphComponent = ({data}: LineGraphProps) => {
           {
             value: 'stressLevel',
             label: t('stress'),
+            style: {
+              backgroundColor: `${
+                mentalType === 'stressLevel'
+                  ? 'rgba(103, 80, 164, 0.5)'
+                  : colors.background
+              }`,
+            },
           },
           {
             value: 'depressionLevel',
             label: t('depression'),
+            style: {
+              backgroundColor: `${
+                mentalType === 'depressionLevel'
+                  ? 'rgba(103, 80, 164, 0.5)'
+                  : colors.background
+              }`,
+            },
           },
-          {value: 'anxietyLevel', label: t('anxiety')},
+          {
+            value: 'anxietyLevel',
+            label: t('anxiety'),
+            style: {
+              backgroundColor: `${
+                mentalType === 'anxietyLevel'
+                  ? 'rgba(103, 80, 164, 0.5)'
+                  : colors.background
+              }`,
+            },
+          },
         ]}
       />
       <View style={{height: 480, width: Dimensions.get('window').width}}>
@@ -110,19 +154,33 @@ const LineGraphComponent = ({data}: LineGraphProps) => {
               font,
               formatXLabel: label => {
                 const date = new Date(label);
-                return `${date.getMonth() + 1}-${date.getDate()}`;
+                return `${(date.getMonth() + 1)
+                  .toString()
+                  .padStart(2, '0')}-${date
+                  .getDate()
+                  .toString()
+                  .padStart(2, '0')}`;
               },
               lineColor: colors.secondary,
               lineWidth: 0,
               labelColor: colors.secondary,
+              tickCount: 2,
+              tickValues: [
+                Date.now() - millisecondsIn2Weeks + millisecondsInOneDay,
+                Date.now(),
+              ],
             }}
             yAxis={[
               {
                 font,
+                formatYLabel: label => {
+                  return label === 5 ? t('Low') : t('High');
+                },
                 lineColor: colors.secondary,
                 labelColor: colors.secondary,
                 lineWidth: 0,
-                tickValues: [0, 40, 80, 120, 160, 200, 240, 280],
+                tickCount: 2,
+                tickValues: [0, 5, maxHigh],
               },
             ]}
             padding={20}
@@ -132,18 +190,54 @@ const LineGraphComponent = ({data}: LineGraphProps) => {
             chartPressState={state}>
             {({points, chartBounds}) => (
               <>
-                {isActive && (
-                  <SkiaLine
-                    color={colors.tertiary}
-                    p1={{x: state.x.position.value, y: chartBounds.top}}
-                    p2={{x: state.x.position.value, y: chartBounds.bottom}}
+                {!isAnimating &&
+                filteredData.findIndex(
+                  d =>
+                    d.points === derivedYValue.value &&
+                    d.date === derivedXValue.value,
+                ) !== -1 ? (
+                  <Circle
+                    cx={state.x.position.value}
+                    cy={state.y.points.position.value}
+                    r={6}
+                    color={colors.primary}
                   />
+                ) : (
+                  !isAnimating && (
+                    <Circle
+                      cx={points.points.at(-2)?.x}
+                      cy={points.points.at(-2)?.y ?? 0}
+                      r={6}
+                      color={colors.primary}
+                    />
+                  )
                 )}
+                <SkiaLine
+                  color={colors.primary}
+                  strokeWidth={4}
+                  p1={{x: chartBounds.left, y: chartBounds.bottom}}
+                  p2={{x: chartBounds.left, y: chartBounds.top}}
+                  strokeCap={'round'}
+                />
+                <SkiaLine
+                  color={colors.primary}
+                  strokeWidth={4}
+                  p1={{
+                    x: chartBounds.left,
+                    y: chartBounds.bottom,
+                  }}
+                  p2={{
+                    x: chartBounds.right,
+                    y: chartBounds.bottom,
+                  }}
+                  strokeCap={'round'}
+                />
                 <Line
                   points={points.points}
                   color={colors.primary}
                   strokeWidth={2}
                   curveType="natural"
+                  strokeCap={'round'}
                   animate={{type: 'timing', duration: 300}}
                 />
                 <Area
@@ -159,14 +253,33 @@ const LineGraphComponent = ({data}: LineGraphProps) => {
           </CartesianChart>
         )}
       </View>
-      {isActive && (
-        <View style={{alignItems: 'center'}}>
-          <Text variant="titleLarge">
-            {`${t('your')} ${transformString(mentalType)} ${new Date(
-              derivedXValue.value,
-            ).toLocaleDateString()} ${t('was')} ${derivedYValue.value}`}
+      {filteredData.findIndex(
+        d => d.points === derivedYValue.value && d.date === derivedXValue.value,
+      ) !== -1 ? (
+        <View style={{alignItems: 'center', padding: 20}}>
+          <Text variant="bodyMedium">
+            {derivedXValue.value !== 0 &&
+              `${t('your')} ${transformString(mentalType)} ${new Date(
+                derivedXValue.value,
+              ).toLocaleDateString()} ${t('was')} ${derivedYValue.value} ${t(
+                'whichIs',
+              )} ${getLowMediumHigh(derivedYValue.value)}`}
           </Text>
         </View>
+      ) : (
+        !isAnimating && (
+          <View style={{alignItems: 'center', padding: 20}}>
+            <Text variant="bodyMedium">
+              {`${t('your')} ${transformString(mentalType)} ${new Date(
+                filteredData.at(-2)?.date ?? 0,
+              ).toLocaleDateString()} ${t('was')} ${
+                filteredData.at(-2)?.points
+              } ${t('whichIs')} ${getLowMediumHigh(
+                filteredData.at(-2)?.points ?? 0,
+              )}`}
+            </Text>
+          </View>
+        )
       )}
     </SafeAreaView>
   );
