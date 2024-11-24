@@ -238,6 +238,7 @@ const LineGraphComponent = ({data}: LineGraphProps) => {
                   strokeWidth={2}
                   curveType="natural"
                   strokeCap={'round'}
+                  opacity={0.8}
                   animate={{type: 'timing', duration: 300}}
                 />
                 <Area
@@ -245,7 +246,7 @@ const LineGraphComponent = ({data}: LineGraphProps) => {
                   color={colors.primary}
                   y0={chartBounds.bottom}
                   curveType="natural"
-                  opacity={0.5}
+                  opacity={0.2}
                   animate={{type: 'timing', duration: 300}}
                 />
               </>
