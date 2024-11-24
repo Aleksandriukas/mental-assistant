@@ -50,5 +50,8 @@
   "seekAdvice": "Jūsų psichinės sveikatos rodiklis atrodo šiek tiek aukštas. Rekomenduojame medituoti, kad sumažintumėte stresą, depresiją ir nerimą.",
   "getHelp": "Jūsų psichinės sveikatos rodiklis atrodo labai aukštas. Rekomenduojame apsilankyti pas psichologą.",
   "Low": "Žem",
-  "High": "Auk"
+  "High": "Auk",
+
+  "suggestions": "Patarimai",
+  "suggestionsDescription": "Čia galite rasti patarimų, kaip pagerinti savo psichinę sveikatą"
 }
