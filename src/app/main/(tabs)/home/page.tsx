@@ -30,7 +30,7 @@ import {getAdvices} from '../../../../service/getAdvices';
 import {useTranslation} from 'react-i18next';
 import LineGraphComponent from '../../../../components/LineGraphComponent/LineGraphComponent';
 import MiniLineGraph from '../../../../components/MiniLineGraph/MiniLineGraph';
-
+import Suggestions from '../../../../components/Suggestion/Suggestion';
 export default function DailyPage() {
   const {top} = useSafeAreaInsets();
 
@@ -95,7 +95,7 @@ export default function DailyPage() {
         flex: 1,
         paddingTop: top + 12,
         marginHorizontal: 24,
-        gap: 12,
+        gap: 18,
       }}>
       <Test
         completed={results[0].data?.completedTests ?? 0}
@@ -104,17 +104,24 @@ export default function DailyPage() {
           linkTo(`/main/mentalTest`);
         }}
       />
-      <DailyTest
-        onPress={() => {
-          if (!(results[1].data?.isCompleted ?? true))
-            linkTo(`/main/mentalTest/-1/0`);
-        }}
-        isCompleted={results[1].data?.isCompleted ?? true}
-        streak={
-          (results[1].data?.streakCount ?? 0) +
-          (results[1].data?.isCompleted ? 1 : 0)
-        }
-      />
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <DailyTest
+          onPress={() => {
+            if (!(results[1].data?.isCompleted ?? true))
+              linkTo(`/main/mentalTest/-1/0`);
+          }}
+          isCompleted={results[1].data?.isCompleted ?? true}
+          streak={
+            (results[1].data?.streakCount ?? 0) +
+            (results[1].data?.isCompleted ? 1 : 0)
+          }
+        />
+        <Suggestions
+          onPress={() => {
+            linkTo('/main/suggestions');
+          }}
+        />
+      </View>
       <View style={{flexDirection: 'row', gap: 20}}>
         <MiniLineGraph
           data={results[3].data?.map(d => {

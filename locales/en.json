@@ -50,5 +50,8 @@
   "seekAdvice": "Your mental health stat seems to be a little bit high. We advise you to meditate, to relieve stress, depression and anxiety.",
   "getHelp": "Your mental health stat seems to be very high. We advise you to visit a psychologist.",
   "Low": "L",
-  "High": "H"
+  "High": "H",
+
+  "suggestions": "Suggestions",
+  "suggestionsDescription": "Here you can find suggestions to improve your mental health"
 }
