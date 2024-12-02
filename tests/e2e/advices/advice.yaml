@@ -1,0 +1,14 @@
+appId: com.mentalassistant
+---
+- runFlow: '../login/login.yaml'
+- tapOn: 'Suggestions'
+- assertVisible: 'Connect with Others'
+- assertVisible: 'Human connection.*'
+- tapOn: 'Connect with Others'
+- assertVisible: '.*If socializing feels daunting, start.*'
+- tapOn: 'Connect with Others'
+- scrollUntilVisible:
+    centerElement: true
+    element:
+      text: 'Physical Activity'
+    timeout: 10000
