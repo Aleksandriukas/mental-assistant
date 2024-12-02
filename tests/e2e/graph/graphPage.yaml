@@ -1,0 +1,11 @@
+appId: com.mentalassistant
+---
+- runFlow: '../login/login.yaml'
+- tapOn: 'Check your stats here'
+- assertVisible: 'Your statistics'
+- tapOn: 'Stress'
+- assertVisible: 'Your stress level.*'
+- tapOn: 'Depression'
+- assertVisible: 'Your depression level.*'
+- tapOn: 'Anxiety'
+- assertVisible: 'Your anxiety level.*'

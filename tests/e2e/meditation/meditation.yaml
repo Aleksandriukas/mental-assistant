@@ -1,0 +1,16 @@
+appId: com.mentalassistant
+---
+- runFlow: '../login/login.yaml'
+- tapOn: 'Meditation'
+- assertVisible: 'Breathing'
+- tapOn: 'Breathing'
+- assertVisible: 'Inhale'
+- waitForAnimationToEnd:
+    timeout: 5000
+- assertVisible: 'Hold'
+- waitForAnimationToEnd:
+    timeout: 5000
+- assertVisible: 'Exhale'
+- waitForAnimationToEnd:
+    timeout: 5000
+- assertVisible: 'Hold'
