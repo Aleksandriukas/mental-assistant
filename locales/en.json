@@ -53,5 +53,10 @@
   "High": "H",
 
   "suggestions": "Suggestions",
-  "suggestionsDescription": "Here you can find suggestions to improve your mental health"
+  "suggestionsDescription": "Here you can find suggestions to improve your mental health",
+
+  "breathing": "Breathing",
+  "inhale": "Inhale",
+  "hold": "Hold",
+  "exhale": "Exhale"
 }

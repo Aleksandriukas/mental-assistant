@@ -53,5 +53,10 @@
   "High": "Auk",
 
   "suggestions": "Patarimai",
-  "suggestionsDescription": "Čia galite rasti patarimų, kaip pagerinti savo psichinę sveikatą"
+  "suggestionsDescription": "Čia galite rasti patarimų, kaip pagerinti savo psichinę sveikatą",
+
+  "breathing": "Kvėpavimas",
+  "inhale": "Įkvėpk",
+  "hold": "Laikyk",
+  "exhale": "Iškvėpk"
 }
